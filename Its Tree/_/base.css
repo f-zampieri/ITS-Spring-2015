@@ -47,11 +47,19 @@ p {
 }
  
 .container {
-  width: 80%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   margin-top:10px;
 }
+
+#option {
+	--margin-top:10px;
+    --width: 200px; 
+    --height: 200px;
+	margin: 0 auto;
+}
+
  
 @media all and (max-width: 500px) {
   h2 {
