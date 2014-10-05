@@ -1,18 +1,20 @@
-var   w = 1000,
-      h = 1000;
+var   w = 250,
+      h = 250;
 
-var circleWidth = 5;
+var circleWidth = 12;
+var tooltip = d3.select('#chart').append('div')
+        .style('position', 'absolute')
+        .style('padding', '0 15px')
+        .style('background', 'pink')
+		.style('font-weight', 'bold');
 
 var palette = {
       "lightgray": "#819090",
       "gray": "#708284",
       "mediumgray": "#536870",
-      
       "darkgray": "#475B62",
-
       "darkblue": "#0A2933",
       "darkerblue": "#042029",
-
       "paleryellow": "#FCF4DC",
       "paleyellow": "#EAE3CB",
       "yellow": "#A57706",
@@ -26,22 +28,22 @@ var palette = {
   }
 
 var nodes = [
-      { name: "Parent Concept"},
-      { name: "2nd Parent Concept", target: [0]},
-      { name: "2nd Tier", target: [0]},
-      { name: "2nd Tier", target: [0]},
-      { name: "3rd Tier", target: [2]},
-      { name: "3rd Tier", target: [2]},
-      { name: "3rd Tier", target: [3]},
-      { name: "3rd Tier", target: [3]},
-      { name: "4th Tier", target: [4]},
-      { name: "4th Tier", target: [4]},
-      { name: "4th Tier", target: [5]},
-      { name: "4th Tier", target: [5]},
-      { name: "4th Tier", target: [6]},
-      { name: "4th Tier", target: [6]},
-      { name: "4th Tier", target: [7]},
-      { name: "4th Tier", target: [7]}
+      { name: "1st Parent ", questionID: "questionID 1"},
+      { name: "2nd Parent ", target: [0], questionID: "questionID 2"},
+      { name: "2nd Tier", target: [0], questionID: "questionID 2"},
+      { name: "2nd Tier", target: [0], questionID: "questionID 3"},
+      { name: "3rd Tier", target: [2], questionID: "questionID 4"},
+      { name: "3rd Tier", target: [2], questionID: "questionID 5"},
+      { name: "3rd Tier", target: [3], questionID: "questionID 6"},
+      { name: "3rd Tier", target: [3], questionID: "questionID 7"},
+      { name: "4th Tier", target: [4], questionID: "questionID 8"},
+      { name: "4th Tier", target: [4], questionID: "questionID 9"},
+      { name: "4th Tier", target: [5], questionID: "questionID 10"},
+      { name: "4th Tier", target: [5], questionID: "questionID 11"},
+      { name: "4th Tier", target: [6], questionID: "questionID 12"},
+      { name: "4th Tier", target: [6], questionID: "questionID 13"},
+      { name: "4th Tier", target: [7], questionID: "questionID 14"},
+      { name: "4th Tier", target: [7], questionID: "questionID 15"}
 ];
 
 var links = [];
@@ -54,6 +56,7 @@ for (var i = 0; i< nodes.length; i++) {
                         target: nodes[nodes[i].target[x]]
                   })
             }
+			//debugger;
       }
 }
 
@@ -88,12 +91,12 @@ node.append('circle')
 	.attr('r', circleWidth )
 	.attr('fill', function(d, i) {
         if (i <= 1) { return palette.blue}
-        else if (i == 2 && i == 3) {return palette.pink}
+        else if (i == 2 || i == 3) {return palette.green}
         else if (i >= 4 && i < 8) { return palette.red}
         else { return palette.yellow}
 	})
 
-node.append('text')
+/* node.append('text')
 	.text(function(d) { return d.name})
 	.attr('font-family', 'Roboto Slab')
 	.attr('fill', function(d, i) {
@@ -102,68 +105,91 @@ node.append('text')
         else if (i >= 4 && i < 8) { return palette.red}
         else { return palette.yellow}
 	})
-	.attr('x', function(d, i) {
-		if (i>0) { return circleWidth + 4 }
-		else { return circleWidth -15 }
+	.attr('x', function(d){
+		return 0
 	})
-	.attr('y', function(d, i) {
-		if (i>0) { return circleWidth }
-		else { return 8 }
+	.attr('y', function(d){
+		return circleWidth - 2*circleWidth
 	})
 	.attr('text-anchor', function(d, i) {
-		if (i>0) { return 'beginning' }
-		else { return 'end'}
-	})
+		return 'middle'
+	}) */
 	/* .attr('font-size',  function(d, i) {
 		if (i>0) { return '1em' }
 		else { return '1.8em'}
 	})
  */
+var tempColor;
 force.on('tick', function(e) {
-	node.attr('transform', function(d, i) {
+	node
+	.attr('transform', function(d, i) {
+		//return 'translate('+ d.x +', '+ d.y +')';
         d.fixed = true;
-        if (i == 0) d.x = 500;
-        if (i == 1) d.x = 750;
+        if (i == 0) d.x = 250;
+        if (i == 1) d.x = 375;
 
-        if (i == 2)  d.x = 300;
-        if (i == 3)  d.x = 700;
+        if (i == 2)  d.x = 150;
+        if (i == 3)  d.x = 350;
         
-        if (i == 4)  d.x = 200;
-        if (i == 5)  d.x = 400;
-        if (i == 6)  d.x = 600;
-        if (i == 7)  d.x = 800;
+        if (i == 4)  d.x = 100;
+        if (i == 5)  d.x = 200;
+        if (i == 6)  d.x = 300;
+        if (i == 7)  d.x = 400;
         
-        if (i == 8)  d.x = 150;
-        if (i == 9)  d.x = 250;
-        if (i == 10)  d.x = 350;
-        if (i == 11)  d.x = 450;
-        if (i == 12)  d.x = 550;
-        if (i == 13)  d.x = 650;
-        if (i == 14)  d.x = 750;
-        if (i == 15)  d.x = 850;
+        if (i == 8)  d.x = 75;
+        if (i == 9)  d.x = 125;
+        if (i == 10)  d.x = 175;
+        if (i == 11)  d.x = 225;
+        if (i == 12)  d.x = 275;
+        if (i == 13)  d.x = 325;
+        if (i == 14)  d.x = 375;
+        if (i == 15)  d.x = 425;
         
-        if (i == 0)  d.y = 200;
-        if (i == 1)  d.y = 200;
+        if (i == 0)  d.y = 100;
+        if (i == 1)  d.y = 100;
         
-        if (i == 2)  d.y = 400;
-        if (i == 3)  d.y = 400;
+        if (i == 2)  d.y = 200;
+        if (i == 3)  d.y = 200;
         
-        if (i == 4)  d.y = 600;
-        if (i == 5)  d.y = 600;
-        if (i == 6)  d.y = 600;
-        if (i == 7)  d.y = 600;
+        if (i == 4)  d.y = 300;
+        if (i == 5)  d.y = 300;
+        if (i == 6)  d.y = 300;
+        if (i == 7)  d.y = 300;
         
-        if (i == 8)  d.y = 800;
-        if (i == 9)  d.y = 800;
-        if (i == 10)  d.y = 800;
-        if (i == 11)  d.y = 800;
-        if (i == 12)  d.y = 800;
-        if (i == 13)  d.y = 800;
-        if (i == 14)  d.y = 800;
-        if (i == 15)  d.y = 800;
+        if (i == 8)  d.y = 400;
+        if (i == 9)  d.y = 400;
+        if (i == 10)  d.y = 400;
+        if (i == 11)  d.y = 400;
+        if (i == 12)  d.y = 400;
+        if (i == 13)  d.y = 400;
+        if (i == 14)  d.y = 400;
+        if (i == 15)  d.y = 400;
+		d.y = d.y/2;
+		d.x = d.x/2;
 		return 'translate('+ d.x +', '+ d.y +')';
 	})
-
+	.on('mouseover', function(d){
+		//debugger;
+		//d.circle.r = circleWidth * 2
+		d3.select(this).select("circle").attr('r', circleWidth*4 )
+		tooltip.transition()
+            .style('opacity', 0.9)
+		tempColor = this.style.fill;
+		d3.select(this)
+            .style('opacity', .5)
+            .style('fill', palette.green)
+		tooltip.html(d.questionID)
+			//.style('left', (d3.event.pageX - 35) + 'px')
+			//.style('top',  (d3.event.pageY - 25) + 'px')
+		//debugger;
+	})
+	//.on('click', function(d){ document.write("Hello World!");})
+	.on('mouseout', function(d) {
+		d3.select(this).select("circle").attr('r', circleWidth )
+        d3.select(this)
+            .style('opacity', 1)
+            .style('fill', tempColor)
+    })
 	link
 		.attr('x1', function(d) { return d.source.x })
 		.attr('y1', function(d) { return d.source.y })
