@@ -1,0 +1,22 @@
+These are the tables you guys should look up: 
+1.tags(this contains concept name and concept id) 
+2. questions (this has questions, answers, questions id)
+3. intelligent_review_Spring_2014(This has data we calculated
+from last semester, you need to run the lastest code of ITS to create this table on your local database)
+
+given a userID, I need the following data in JSon: questionID, questions decription, conceptID, conceptName, tier, answer, parrent.
+
+
+188 users,
+
+1243,1271.
+
+each user has 322. entries.
+
+tier != 0, 306 entried'
+
+all 322 entries
+
+
+
+
