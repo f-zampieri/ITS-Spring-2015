@@ -19,7 +19,7 @@ class Dao {
 				LEFT OUTER JOIN tags AS C ON C.id = I.concept
 				LEFT OUTER JOIN questions AS Q ON Q.id = I.question
 				where user = $userID ;";
-		echo $sql;
+		//echo $sql;
 		$result = mysqli_query($its_db, $sql);
 		if (!$result) {
 			printf("Error: %s\n", mysqli_error($its_db));

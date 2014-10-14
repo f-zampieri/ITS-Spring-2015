@@ -2,7 +2,7 @@ var   w = 250,
       h = 250;
 
 var circleWidth = 12;
-var tooltip = d3.select('#chart').append('div')
+var tooltip = d3.select('#tree').append('div')
         .style('position', 'absolute')
         .style('padding', '0 15px')
         .style('background', 'pink')
@@ -60,7 +60,7 @@ for (var i = 0; i< nodes.length; i++) {
       }
 }
 
-var myChart = d3.select('#chart')
+var myTree = d3.select('#tree')
 		.append('svg')
 		.attr('width', w)
 		.attr('height', h)
@@ -72,11 +72,11 @@ var force = d3.layout.force()
 	.gravity(0.1)
 	.charge(-1000)
 
-var link = myChart.selectAll('line')
+var link = myTree.selectAll('line')
 	.data(links).enter().append('line')
 	.attr('stroke', palette.gray)
 
-var node = myChart.selectAll('circle')
+var node = myTree.selectAll('circle')
 	.data(nodes).enter()
 	.append('g')
 	.call(force.drag);
