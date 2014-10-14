@@ -26,7 +26,6 @@ var palette = {
       "green": "#259286",
       "yellowgreen": "#738A05"
   }
-
 var nodes = [
       { name: "1st Parent ", questionID: "questionID 1"},
       { name: "2nd Parent ", target: [0], questionID: "questionID 2"},
@@ -119,6 +118,14 @@ node.append('circle')
 		else { return '1.8em'}
 	})
  */
+//~ var radio = d3.select('#radio');
+//~ radio
+	//~ .attr('id', function(d,i){
+	//~ })
+	//~ on('change', function(radio.attr('id')){
+	//~ 
+//~ })
+
 var tempColor;
 force.on('tick', function(e) {
 	node
@@ -200,3 +207,25 @@ force.on('tick', function(e) {
 
 force.start();
 
+
+
+
+//~ var data = ["Option 1", "Option 2", "Option 3"];
+ //~ 
+//~ var select = d3.select('#first-rows')
+//~ .append('select')
+//~ .attr('class','select')
+//~ .on('change',onchange)
+ //~ 
+//~ var options = select
+//~ .selectAll('option')
+//~ .data(data).enter()
+//~ .append('option')
+//~ .text(function (d) { return d; });
+ //~ 
+//~ function onchange() {
+//~ selectValue = d3.select('select').property('value')
+//~ d3.select('#first-row')
+//~ .append('p')
+//~ .text(selectValue + ' is the last selected option.')
+//~ };
