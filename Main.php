@@ -23,12 +23,13 @@ Model::writeToJson(1243);
 			<div class="col-md-3" id = "tree"></div>
 			<div class="btn-group btn-group-md">
 				<button type="button" class="btn btn-default" id="next-branch">Next Branch</button>
+				<button type="button" class="btn btn-default" id="pre-question">Previous Question</button>
 				<button type="button" class="btn btn-default" id="next-question">Next Question</button>
 			</div>
 			<div></div>
-			<div class="radio">
-				<input type="radio" value="auto" name="auto" id="auto"> Auto <br>
-				<input type="radio" value="manual" name="Manual" id="Manual" > Manual
+			<div class="mode">
+				<input type="radio" value="auto" name="mode" id="auto"> Auto <br>
+				<input type="radio" value="manual" name="mode" id="Manual" > Manual
 			</div>
 		</div>
 	</div> <!-- container-->
