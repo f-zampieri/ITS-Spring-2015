@@ -68,8 +68,6 @@ var force = d3.layout.force()
 	.size([w, h])
 	.nodes(nodes)
 	.links([])
-	.gravity(0.1)
-	.charge(-1000)
 
 var link = myTree.selectAll('line')
 	.data(links).enter().append('line')
@@ -77,8 +75,7 @@ var link = myTree.selectAll('line')
 
 var node = myTree.selectAll('circle')
 	.data(nodes).enter()
-	.append('g')
-	.call(force.drag);
+	.append('g');
 
 node.append('circle')
 	.attr('cx', function(d, i) { 
@@ -130,7 +127,6 @@ var tempColor;
 force.on('tick', function(e) {
 	node
 	.attr('transform', function(d, i) {
-		//return 'translate('+ d.x +', '+ d.y +')';
         d.fixed = true;
         if (i == 0) d.x = 250;
         if (i == 1) d.x = 375;
@@ -207,25 +203,3 @@ force.on('tick', function(e) {
 
 force.start();
 
-
-
-
-//~ var data = ["Option 1", "Option 2", "Option 3"];
- //~ 
-//~ var select = d3.select('#first-rows')
-//~ .append('select')
-//~ .attr('class','select')
-//~ .on('change',onchange)
- //~ 
-//~ var options = select
-//~ .selectAll('option')
-//~ .data(data).enter()
-//~ .append('option')
-//~ .text(function (d) { return d; });
- //~ 
-//~ function onchange() {
-//~ selectValue = d3.select('select').property('value')
-//~ d3.select('#first-row')
-//~ .append('p')
-//~ .text(selectValue + ' is the last selected option.')
-//~ };
