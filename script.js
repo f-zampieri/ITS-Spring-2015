@@ -1,12 +1,16 @@
+d3.json("file.json", function(error, json){
+
+var currentBranch = 0;
 var   w = 250,
       h = 250;
-
 var circleWidth = 12;
 var tooltip = d3.select('#tree').append('div')
         .style('position', 'absolute')
         .style('padding', '0 15px')
-        .style('background', 'pink')
+        .style('background', 'pink')    
 		.style('font-weight', 'bold');
+
+var question = d3.select("#question-content")
 
 var palette = {
       "lightgray": "#819090",
@@ -26,24 +30,38 @@ var palette = {
       "green": "#259286",
       "yellowgreen": "#738A05"
   }
+var nodes = [];
+nodes = setNodeData(json.branch[currentBranch]);
+function setNodeData(branch){
+	console.log(branch);
 var nodes = [
-      { name: "1st Parent ", questionID: "questionID 1"},
-      { name: "2nd Parent ", target: [0], questionID: "questionID 2"},
-      { name: "2nd Tier", target: [0], questionID: "questionID 2"},
-      { name: "2nd Tier", target: [0], questionID: "questionID 3"},
-      { name: "3rd Tier", target: [2], questionID: "questionID 4"},
-      { name: "3rd Tier", target: [2], questionID: "questionID 5"},
-      { name: "3rd Tier", target: [3], questionID: "questionID 6"},
-      { name: "3rd Tier", target: [3], questionID: "questionID 7"},
-      { name: "4th Tier", target: [4], questionID: "questionID 8"},
-      { name: "4th Tier", target: [4], questionID: "questionID 9"},
-      { name: "4th Tier", target: [5], questionID: "questionID 10"},
-      { name: "4th Tier", target: [5], questionID: "questionID 11"},
-      { name: "4th Tier", target: [6], questionID: "questionID 12"},
-      { name: "4th Tier", target: [6], questionID: "questionID 13"},
-      { name: "4th Tier", target: [7], questionID: "questionID 14"},
-      { name: "4th Tier", target: [7], questionID: "questionID 15"}
+      { name: "1st Parent ", questionID: branch[0]},
+      { name: "2nd Parent ", target: [0], questionID: "Next Branch"},
+      { name: "2nd Tier", target: [0], questionID: branch[1]},
+      { name: "2nd Tier", target: [0], questionID: branch[2]},
+      { name: "3rd Tier", target: [2], questionID: branch[3]},
+      { name: "3rd Tier", target: [2], questionID: branch[4]},
+      { name: "3rd Tier", target: [3], questionID: branch[5]},
+      { name: "3rd Tier", target: [3], questionID: branch[6]},
+      { name: "4th Tier", target: [4], questionID: branch[7]},
+      { name: "4th Tier", target: [4], questionID: branch[8]},
+      { name: "4th Tier", target: [5], questionID: branch[9]},
+      { name: "4th Tier", target: [5], questionID: branch[10]},
+      { name: "4th Tier", target: [6], questionID: branch[11]},
+      { name: "4th Tier", target: [6], questionID: branch[12]},
+      { name: "4th Tier", target: [7], questionID: branch[13]},
+      { name: "4th Tier", target: [7], questionID: branch[14]}
 ];
+	return nodes;
+}
+var nextB = d3.select('#next-branch');
+
+nextB.on('click', function(){
+	currentBranch++;
+	nodes = setNodeData(json.branch[currentBranch]);
+	node.data(nodes).update();
+	//debugger;
+});
 
 var links = [];
 
@@ -92,38 +110,10 @@ node.append('circle')
         else { return palette.yellow}
 	})
 
-/* node.append('text')
-	.text(function(d) { return d.name})
-	.attr('font-family', 'Roboto Slab')
-	.attr('fill', function(d, i) {
-		if (i<=1) { return palette.blue}
-		else if (i == 2 && i == 3) {return palette.pink}
-        else if (i >= 4 && i < 8) { return palette.red}
-        else { return palette.yellow}
-	})
-	.attr('x', function(d){
-		return 0
-	})
-	.attr('y', function(d){
-		return circleWidth - 2*circleWidth
-	})
-	.attr('text-anchor', function(d, i) {
-		return 'middle'
-	}) */
-	/* .attr('font-size',  function(d, i) {
-		if (i>0) { return '1em' }
-		else { return '1.8em'}
-	})
- */
-//~ var radio = d3.select('#radio');
-//~ radio
-	//~ .attr('id', function(d,i){
-	//~ })
-	//~ on('change', function(radio.attr('id')){
-	//~ 
-//~ })
+
 
 var tempColor;
+console.log(nodes);
 force.on('tick', function(e) {
 	node
 	.attr('transform', function(d, i) {
@@ -181,12 +171,11 @@ force.on('tick', function(e) {
 		d3.select(this)
             .style('opacity', .5)
             .style('fill', palette.green)
-		tooltip.html(d.questionID)
-			//.style('left', (d3.event.pageX - 35) + 'px')
-			//.style('top',  (d3.event.pageY - 25) + 'px')
-		//debugger;
+        console.log(d.questionID);
+		tooltip.html(json.question[d.questionID].concept_name);
+		//console.log(json.question[d.questionID].question);
+		question.property("value", json.question[d.questionID].question);
 	})
-	//.on('click', function(d){ document.write("Hello World!");})
 	.on('mouseout', function(d) {
 		d3.select(this).select("circle").attr('r', circleWidth )
         d3.select(this)
@@ -202,4 +191,5 @@ force.on('tick', function(e) {
 
 
 force.start();
+})
 

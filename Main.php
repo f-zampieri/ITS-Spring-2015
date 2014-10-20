@@ -40,7 +40,7 @@ Model::writeToJson(1243);
 				<p class="question-label">Question: </p>
 			</div>
 			<div class="col-xs-10 question-content-column">
-				<textarea id="question-content" class="form-control" rows="3" readonly></textarea>
+				<textarea id="question-content" class="form-control" rows="3"></textarea>
 			</div>
 		</div>
 		<br/>
