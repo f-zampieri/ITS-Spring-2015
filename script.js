@@ -189,6 +189,14 @@ force.on('tick', function(e) {
 		.attr('y2', function(d) { return d.target.y })
 })
 
+var nextQ = d3.select("#next-question");
+
+nextQ.on('click', function() {
+	d3.select(this).select("#next-question").text('ok');
+	//debugger;
+})
+
+
 
 force.start();
 })
