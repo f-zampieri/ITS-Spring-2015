@@ -38,12 +38,16 @@ Model::writeToJson(1243);
 		<div class="question-area container">
 			<div class="col-xs-2 question-label-column">
 				<p class="question-label">Question: </p>
+				<div id = "image-content"></div>
 			</div>
-			<div class="col-xs-10 question-content-column">
-				<textarea id="question-content" class="form-control" rows="3"></textarea>
+			<div id = "question-content"></div>
+			<br>
+			<div class="col-xs-2 answer-label-column">
+				<p class="answer-label">Answer: </p>
 			</div>
+			<div id = "answer-content"></div>
 		</div>
-		<br/>
+<!--
 		<div class="answer-area container">
 			<div class="col-xs-2 question-label-column">
 				<p class="question-label">Answer: </p>
@@ -58,6 +62,7 @@ Model::writeToJson(1243);
 				</select>
 			</div>
 		</div>
+-->
 		<button class="btn btn-success" id="submit">Submit</button>
 	</div>
 	<script src="d3/d3.min.js"></script>

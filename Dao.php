@@ -10,7 +10,7 @@ class Dao {
 					Q.id AS question_id,
 					Q.title AS title,
 					Q.images_id AS image_id,
-					Q.answers AS answer,
+					Q.answers AS answers,
 					C.name AS concept_name,
 					I.tier AS tier,
 					I.parent AS parent,

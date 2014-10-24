@@ -10,7 +10,9 @@ var tooltip = d3.select('#tree').append('div')
         .style('background', 'pink')    
 		.style('font-weight', 'bold');
 
-var question = d3.select("#question-content")
+var question = d3.select("#question-content").append('tspan');
+var answer = d3.select("#answer-content").append('tspan');
+var image = d3.select("#image-content").append('tspan');
 
 var palette = {
       "lightgray": "#819090",
@@ -174,7 +176,9 @@ force.on('tick', function(e) {
         console.log(d.questionID);
 		tooltip.html(json.question[d.questionID].concept_name);
 		//console.log(json.question[d.questionID].question);
-		question.property("value", json.question[d.questionID].question);
+		answer.html(function(){return json.question[d.questionID].answers});
+		image.html(function(){return json.question[d.questionID].image_id});
+		question.html(function(){return json.question[d.questionID].question});
 	})
 	.on('mouseout', function(d) {
 		d3.select(this).select("circle").attr('r', circleWidth )
@@ -192,10 +196,9 @@ force.on('tick', function(e) {
 var nextQ = d3.select("#next-question");
 
 nextQ.on('click', function() {
-	d3.select(this).select("#next-question").text('ok');
+	d3.select("#next-question").text('ok');
 	//debugger;
 })
-
 
 
 force.start();
