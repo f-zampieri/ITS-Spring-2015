@@ -1,6 +1,7 @@
 d3.json("file.json", function(error, json){
 
 var currentBranch = 0;
+var currentQuestion = 0;
 var   w = 250,
       h = 250;
 var circleWidth = 12;
@@ -35,28 +36,30 @@ nodes = setNodeData(json.branch[currentBranch]);
 function setNodeData(branch){
 	console.log(branch);
 var nodes = [
-      { name: "1st Parent ", questionID: branch[0]},
+      { name: "1st Parent ", ndx: 0, questionID: branch[0]},
       { name: "2nd Parent ", target: [0], questionID: "Next Branch"},
-      { name: "2nd Tier", target: [0], questionID: branch[1]},
-      { name: "2nd Tier", target: [0], questionID: branch[2]},
-      { name: "3rd Tier", target: [2], questionID: branch[3]},
-      { name: "3rd Tier", target: [2], questionID: branch[4]},
-      { name: "3rd Tier", target: [3], questionID: branch[5]},
-      { name: "3rd Tier", target: [3], questionID: branch[6]},
-      { name: "4th Tier", target: [4], questionID: branch[7]},
-      { name: "4th Tier", target: [4], questionID: branch[8]},
-      { name: "4th Tier", target: [5], questionID: branch[9]},
-      { name: "4th Tier", target: [5], questionID: branch[10]},
-      { name: "4th Tier", target: [6], questionID: branch[11]},
-      { name: "4th Tier", target: [6], questionID: branch[12]},
-      { name: "4th Tier", target: [7], questionID: branch[13]},
-      { name: "4th Tier", target: [7], questionID: branch[14]}
+      { name: "2nd Tier", ndx: 1, target: [0], questionID: branch[1]},
+      { name: "2nd Tier", ndx: 2, target: [0], questionID: branch[2]},
+      { name: "3rd Tier", ndx: 3, target: [2], questionID: branch[3]},
+      { name: "3rd Tier", ndx: 4, target: [2], questionID: branch[4]},
+      { name: "3rd Tier", ndx: 5, target: [3], questionID: branch[5]},
+      { name: "3rd Tier", ndx: 6, target: [3], questionID: branch[6]},
+      { name: "4th Tier", ndx: 7, target: [4], questionID: branch[7]},
+      { name: "4th Tier", ndx: 8, target: [4], questionID: branch[8]},
+      { name: "4th Tier", ndx: 9, target: [5], questionID: branch[9]},
+      { name: "4th Tier", ndx: 10, target: [5], questionID: branch[10]},
+      { name: "4th Tier", ndx: 11, target: [6], questionID: branch[11]},
+      { name: "4th Tier", ndx: 12, target: [6], questionID: branch[12]},
+      { name: "4th Tier", ndx: 13, target: [7], questionID: branch[13]},
+      { name: "4th Tier", ndx: 14, target: [7], questionID: branch[14]}
 ];
 	return nodes;
 }
+
 var nextB = d3.select('#next-branch');
 
 nextB.on('click', function(){
+  currentQuestion = 0;
 	currentBranch++;
 	nodes = setNodeData(json.branch[currentBranch]);
 	node.data(nodes).update();
@@ -175,7 +178,13 @@ force.on('tick', function(e) {
 		tooltip.html(json.question[d.questionID].concept_name);
 		//console.log(json.question[d.questionID].question);
 		question.property("value", json.question[d.questionID].question);
-	})
+    // start Francisco's code
+    currentQuestion = d.ndx;
+    if (currentQuestion > 0) {
+      currentQuestion++;
+    }
+    // end Francisco's code
+  })
 	.on('mouseout', function(d) {
 		d3.select(this).select("circle").attr('r', circleWidth )
         d3.select(this)
@@ -189,6 +198,31 @@ force.on('tick', function(e) {
 		.attr('y2', function(d) { return d.target.y })
 })
 
+/*
+The way my code works is as follows: if no node has been
+moused over yet and the user clicks next question, it selects
+the first question in the tree. Clicking next question will
+cycle through the nodes of the tree in a level-order fashion.
+If it reaches the last node in the tree and the user
+continues clicking next question, then it will remain on the
+last node of the tree.
+*/
+var nextQ = d3.select("#next-question");
+var qID = nodes[0].questionID;
+nextQ.on('click', function() {
+  if (currentQuestion != 0) {
+    currentQuestion++;
+  }
+  if (currentQuestion > 15) {
+    currentQuestion = 15;
+  }
+  qID = nodes[currentQuestion].questionID;
+  question.property("value", json.question[qID].question);
+  tooltip.html(json.question[qID].concept_name);
+  if (currentQuestion == 0) {
+    currentQuestion = 1;
+  }
+});
 
 force.start();
 })
