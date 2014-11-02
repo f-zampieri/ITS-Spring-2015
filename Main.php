@@ -28,8 +28,8 @@ Model::writeToJson(1243);
 			</div>
 			<div></div>
 			<div class="mode">
-				<input type="radio" value="auto" name="mode" id="auto"> Auto <br>
-				<input type="radio" value="manual" name="mode" id="Manual" > Manual
+				<input type="radio" value="manual" name="mode" id="manual" checked="true"> Manual <br>
+				<input type="radio" value="auto" name="mode" id="auto"> Auto
 			</div>
 		</div>
 	</div> <!-- container-->

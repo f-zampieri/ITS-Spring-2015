@@ -2,6 +2,10 @@ d3.json("file.json", function(error, json){
 
 var currentBranch = 0;
 var currentQuestion = 0;
+var currentAnswer = "";
+var wrong = -1;
+var records = [];
+
 var   w = 250,
       h = 250;
 var circleWidth = 12;
@@ -12,6 +16,7 @@ var tooltip = d3.select('#tree').append('div')
     .style('font-weight', 'bold');
 
 var question = d3.select("#question-content").append('tspan');
+var answer = d3.select("#answer-content").append('tspan');
 
 var palette = {
       "lightgray": "#819090",
@@ -59,16 +64,17 @@ var nodes = [
 var nextB = d3.select('#next-branch');
 
 nextB.on('click', function(){
-  currentQuestion = 0;
-  currentBranch++;
-  nodes = setNodeData(json.branch[currentBranch]);
-  //debugger;
-  node.data(nodes);
-  qID = nodes[0].questionID;
-  question.property("value", json.question[qID].question);
-  tooltip.html(json.question[qID].concept_name);
-  question.html(json.question[qID].question);
-  //debugger;
+  if (document.getElementById("manual").checked == true) {
+    currentQuestion = 0;
+    currentBranch++;
+    nodes = setNodeData(json.branch[currentBranch]);
+    //debugger;
+    node.data(nodes);
+    qID = nodes[0].questionID;
+    question.property("value", json.question[qID].question);
+    tooltip.html(json.question[qID].concept_name);
+    question.html(json.question[qID].question);
+  }
 });
 
 var links = [];
@@ -181,21 +187,27 @@ force.on('tick', function(e) {
             .style('opacity', .5)
             .style('fill', palette.green)
         //console.log(d.questionID);
-    tooltip.html(json.question[d.questionID].concept_name);
-    question.html(function(){return json.question[d.questionID].question});
-    question.property("value", json.question[d.questionID].question);
-    // start Francisco's code
-    currentQuestion = d.ndx;
-    console.log(currentQuestion);
-    if (currentQuestion == 0) {
-      tooltip.html(json.question[nodes[0].questionID].concept_name);
-      question.html(json.question[nodes[0].questionID].question);
-      question.property("value", json.question[nodes[0].questionID].question);
-    }/* else if (currentQuestion > 0) {
+    if (document.getElementById("manual").checked == true) {
+      tooltip.html(json.question[d.questionID].concept_name);
+      question.html(function(){return json.question[d.questionID].question});
+      question.property("value", json.question[d.questionID].question);
+      answer.html(function(){return json.question[d.questionID].answers});
+      question.property("value", json.question[d.questionID].answers);
+      // start Francisco's code
+      currentQuestion = d.ndx;
+      if (currentQuestion == 1){
+        currentAnswer = json.question[nodes[2].questionID].answers;
+      } else {
+        currentAnswer = json.question[nodes[currentQuestion].questionID].answers;
+      }
+      console.log(currentAnswer);
+      if (currentQuestion == 0) {
+        tooltip.html(json.question[nodes[0].questionID].concept_name);
+        question.html(json.question[nodes[0].questionID].question);
+        question.property("value", json.question[nodes[0].questionID].question);
+      }
       currentQuestion++;
-    }*/
-    currentQuestion++;
-    // end Francisco's code
+    }
   })
   .on('mouseout', function(d) {
     d3.select(this).select("circle").attr('r', circleWidth )
@@ -221,7 +233,8 @@ last node of the tree.
 */
 var nextQ = d3.select("#next-question");
 var qID = nodes[0].questionID;
-nextQ.on('click', function() {
+
+function nextQFunc() {
   if (currentQuestion != 0) {
     currentQuestion++;
   }
@@ -243,13 +256,20 @@ nextQ.on('click', function() {
   if (currentQuestion == 0) {
     currentQuestion = 1;
   }
+}
+
+nextQ.on('click', function() {
+  if (document.getElementById("manual").checked == true) {
+    nextQFunc();    
+  }
 });
 
 var prevQ = d3.select("#pre-question");
-prevQ.on('click', function() {
+
+function prevQFunc() {
   currentQuestion--;
-  if (currentQuestion < 0) {
-    currentQuestion = 0;
+  if (currentQuestion < 1) {
+    currentQuestion = 1;
   }
   if (currentQuestion == 1) {
     qID = nodes[0].questionID;
@@ -260,6 +280,32 @@ prevQ.on('click', function() {
     question.html(json.question[qID].question);
     tooltip.html(json.question[qID].concept_name);
   }
+}
+
+prevQ.on('click', function() {
+  if (document.getElementById("manual").checked == true) {
+    prevQFunc();
+  }
+});
+
+var submitB = d3.select("#submit");
+submitB.on('click', function() {
+  if (currentQuestion == 1) {
+    currentAnswer = json.question[nodes[2].questionID].answers;
+  } else {
+    currentAnswer = json.question[nodes[currentQuestion].questionID].answers;    
+  }
+  console.log(currentAnswer);
+  if (currentAnswer == currentAnswer*wrong){
+    //records.append("right");
+    records += "right";
+  } else {
+    //records.append("wrong");
+    records += "wrong";
+  }
+  wrong = wrong * -1;
+  nextQFunc();
+  console.log(records);
 });
 
 force.start();
