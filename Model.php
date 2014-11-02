@@ -65,9 +65,11 @@ class Model{
 			$question[$question_id]['question']  = $row['question'];
 			$question[$question_id]['title']  = $row['title'];
 			$question[$question_id]['image_id']  = $row['image_id'];
+			$question[$question_id]['answers']  = $row['answers'];
 			$question[$question_id]['score']  = $row['score'];
 			$question[$question_id]['parent']  = $row['parent'];
 			$question[$question_id]['concept_name']  = $row['concept_name'];
+			
 		}
 		//echo $counter;
 		//print_r($branch);

@@ -9,9 +9,9 @@ var tooltip = d3.select('#tree').append('div')
         .style('position', 'absolute')
         .style('padding', '0 15px')
         .style('background', 'pink')    
-		.style('font-weight', 'bold');
+    .style('font-weight', 'bold');
 
-var question = d3.select("#question-content")
+var question = d3.select("#question-content").append('tspan');
 
 var palette = {
       "lightgray": "#819090",
@@ -34,7 +34,7 @@ var palette = {
 var nodes = [];
 nodes = setNodeData(json.branch[currentBranch]);
 function setNodeData(branch){
-	console.log(branch);
+  //console.log(branch);
 var nodes = [
       { name: "1st Parent ", ndx: 0, questionID: branch[0]},
       { name: "2nd Parent ", target: [0], questionID: "Next Branch"},
@@ -53,7 +53,7 @@ var nodes = [
       { name: "4th Tier", ndx: 13, target: [7], questionID: branch[13]},
       { name: "4th Tier", ndx: 14, target: [7], questionID: branch[14]}
 ];
-	return nodes;
+  return nodes;
 }
 
 var nextB = d3.select('#next-branch');
@@ -64,6 +64,14 @@ nextB.on('click', function(){
 	nodes = setNodeData(json.branch[currentBranch]);
 	node.data(nodes).update();
 	//debugger;
+  currentBranch++;
+  nodes = setNodeData(json.branch[currentBranch]);
+  node.data(nodes);
+  qID = nodes[0].questionID;
+  question.property("value", json.question[qID].question);
+  tooltip.html(json.question[qID].concept_name);
+  question.html(json.question[qID].question);
+  //debugger;
 });
 
 var links = [];
@@ -76,50 +84,51 @@ for (var i = 0; i< nodes.length; i++) {
                         target: nodes[nodes[i].target[x]]
                   })
             }
-			//debugger;
+      //debugger;
       }
 }
 
 var myTree = d3.select('#tree')
-		.append('svg')
-		.attr('width', w)
-		.attr('height', h)
+    .append('svg')
+    .attr('width', w)
+    .attr('height', h)
 
 var force = d3.layout.force()
-	.size([w, h])
-	.nodes(nodes)
-	.links([])
+  .size([w, h])
+  .nodes(nodes)
+  .links([])
 
 var link = myTree.selectAll('line')
-	.data(links).enter().append('line')
-	.attr('stroke', palette.gray)
+  .data(links).enter().append('line')
+  .attr('stroke', palette.gray)
 
 var node = myTree.selectAll('circle')
-	.data(nodes).enter()
-	.append('g');
+  .data(nodes).enter()
+  .append('g');
 
+  console.log(node);
 node.append('circle')
-	.attr('cx', function(d, i) { 
+  .attr('cx', function(d, i) { 
         return d.x;
         })
-	.attr('cy', function(d, i) {
+  .attr('cy', function(d, i) {
         return d.y;
         })
-	.attr('r', circleWidth )
-	.attr('fill', function(d, i) {
+  .attr('r', circleWidth )
+  .attr('fill', function(d, i) {
         if (i <= 1) { return palette.blue}
         else if (i == 2 || i == 3) {return palette.green}
         else if (i >= 4 && i < 8) { return palette.red}
         else { return palette.yellow}
-	})
+  })
 
 
 
 var tempColor;
-console.log(nodes);
+//console.log(nodes);
 force.on('tick', function(e) {
-	node
-	.attr('transform', function(d, i) {
+  node
+  .attr('transform', function(d, i) {
         d.fixed = true;
         if (i == 0) d.x = 250;
         if (i == 1) d.x = 375;
@@ -160,18 +169,18 @@ force.on('tick', function(e) {
         if (i == 13)  d.y = 400;
         if (i == 14)  d.y = 400;
         if (i == 15)  d.y = 400;
-		d.y = d.y/2;
-		d.x = d.x/2;
-		return 'translate('+ d.x +', '+ d.y +')';
-	})
-	.on('mouseover', function(d){
-		//debugger;
-		//d.circle.r = circleWidth * 2
-		d3.select(this).select("circle").attr('r', circleWidth*3 )
-		tooltip.transition()
+    d.y = d.y/2;
+    d.x = d.x/2;
+    return 'translate('+ d.x +', '+ d.y +')';
+  })
+  .on('mouseover', function(d){
+    //debugger;
+    //d.circle.r = circleWidth * 2
+    d3.select(this).select("circle").attr('r', circleWidth*3 )
+    tooltip.transition()
             .style('opacity', 0.9)
-		tempColor = this.style.fill;
-		d3.select(this)
+    tempColor = this.style.fill;
+    d3.select(this)
             .style('opacity', .5)
             .style('fill', palette.green)
         console.log(d.questionID);
@@ -187,15 +196,35 @@ force.on('tick', function(e) {
   })
 	.on('mouseout', function(d) {
 		d3.select(this).select("circle").attr('r', circleWidth )
+        //console.log(d.questionID);
+    tooltip.html(json.question[d.questionID].concept_name);
+    question.html(function(){return json.question[d.questionID].question});
+    question.property("value", json.question[d.questionID].question);
+    // start Francisco's code
+    currentQuestion = d.ndx;
+    console.log(currentQuestion);
+    if (currentQuestion == 0) {
+      tooltip.html(json.question[nodes[0].questionID].concept_name);
+      question.html(json.question[nodes[0].questionID].question);
+      question.property("value", json.question[nodes[0].questionID].question);
+    }/* else if (currentQuestion > 0) {
+      currentQuestion++;
+    }*/
+    currentQuestion++;
+    // end Francisco's code
+  })
+  .on('mouseout', function(d) {
+    d3.select(this).select("circle").attr('r', circleWidth )
+>>>>>>> Francisco
         d3.select(this)
             .style('opacity', 1)
             .style('fill', tempColor)
     })
-	link
-		.attr('x1', function(d) { return d.source.x })
-		.attr('y1', function(d) { return d.source.y })
-		.attr('x2', function(d) { return d.target.x })
-		.attr('y2', function(d) { return d.target.y })
+  link
+    .attr('x1', function(d) { return d.source.x })
+    .attr('y1', function(d) { return d.source.y })
+    .attr('x2', function(d) { return d.target.x })
+    .attr('y2', function(d) { return d.target.y })
 })
 
 /*
@@ -218,10 +247,36 @@ nextQ.on('click', function() {
   }
   qID = nodes[currentQuestion].questionID;
   question.property("value", json.question[qID].question);
+    currentQuestion = 0;
+    currentBranch++;
+    nodes = setNodeData(json.branch[currentBranch]); 
+    node.data(nodes);
+  }
+  if (currentQuestion == 1) {
+    qID = nodes[0].questionID;
+    currentQuestion++;
+  } else {
+    qID = nodes[currentQuestion].questionID;
+  }
+  //qID = nodes[currentQuestion].questionID;
+  question.html(json.question[qID].question);
   tooltip.html(json.question[qID].concept_name);
   if (currentQuestion == 0) {
     currentQuestion = 1;
   }
+});
+
+var prevQ = d3.select("#pre-question");
+prevQ.on('click', function() {
+  currentQuestion--;
+  if (currentQuestion < 0) {
+    currentQuestion = 0;
+  } else if (currentQuestion == 1) {
+    currentQuestion = 0;
+  }
+  qID = nodes[currentQuestion].questionID;
+  question.html(json.question[qID].question);
+  tooltip.html(json.question[qID].concept_name);
 });
 
 force.start();
