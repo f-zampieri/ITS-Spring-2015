@@ -11,7 +11,7 @@ var tooltip = d3.select('#tree').append('div')
         .style('background', 'pink')    
     .style('font-weight', 'bold');
 
-var question = d3.select("#question-content")
+var question = d3.select("#question-content").append('tspan');
 
 var palette = {
       "lightgray": "#819090",
@@ -34,7 +34,7 @@ var palette = {
 var nodes = [];
 nodes = setNodeData(json.branch[currentBranch]);
 function setNodeData(branch){
-  console.log(branch);
+  //console.log(branch);
 var nodes = [
       { name: "1st Parent ", ndx: 0, questionID: branch[0]},
       { name: "2nd Parent ", target: [0], questionID: "Next Branch"},
@@ -62,7 +62,11 @@ nextB.on('click', function(){
   currentQuestion = 0;
   currentBranch++;
   nodes = setNodeData(json.branch[currentBranch]);
-  node.data(nodes).update();
+  //node.exit().remove();
+  node.data(nodes);
+  qID = nodes[0].questionID;
+  question.property("value", json.question[qID].question);
+  tooltip.html(json.question[qID].concept_name);
   //debugger;
 });
 
@@ -98,6 +102,7 @@ var node = myTree.selectAll('circle')
   .data(nodes).enter()
   .append('g');
 
+  console.log(node);
 node.append('circle')
   .attr('cx', function(d, i) { 
         return d.x;
@@ -116,7 +121,7 @@ node.append('circle')
 
 
 var tempColor;
-console.log(nodes);
+//console.log(nodes);
 force.on('tick', function(e) {
   node
   .attr('transform', function(d, i) {
@@ -174,15 +179,21 @@ force.on('tick', function(e) {
     d3.select(this)
             .style('opacity', .5)
             .style('fill', palette.green)
-        console.log(d.questionID);
+        //console.log(d.questionID);
     tooltip.html(json.question[d.questionID].concept_name);
-    //console.log(json.question[d.questionID].question);
+    question.html(function(){return json.question[d.questionID].question});
     question.property("value", json.question[d.questionID].question);
     // start Francisco's code
     currentQuestion = d.ndx;
-    if (currentQuestion > 0) {
+    console.log(currentQuestion);
+    if (currentQuestion == 0) {
+      tooltip.html(json.question[nodes[0].questionID].concept_name);
+      question.html(json.question[nodes[0].questionID].question);
+      question.property("value", json.question[nodes[0].questionID].question);
+    }/* else if (currentQuestion > 0) {
       currentQuestion++;
-    }
+    }*/
+    currentQuestion++;
     // end Francisco's code
   })
   .on('mouseout', function(d) {
@@ -214,10 +225,19 @@ nextQ.on('click', function() {
     currentQuestion++;
   }
   if (currentQuestion > 15) {
-    currentQuestion = 15;
+    currentQuestion = 0;
+    currentBranch++;
+    nodes = setNodeData(json.branch[currentBranch]); 
+    node.data(nodes);
   }
-  qID = nodes[currentQuestion].questionID;
-  question.property("value", json.question[qID].question);
+  if (currentQuestion == 1) {
+    qID = nodes[0].questionID;
+    currentQuestion++;
+  } else {
+    qID = nodes[currentQuestion].questionID;
+  }
+  //qID = nodes[currentQuestion].questionID;
+  question.html(json.question[qID].question);
   tooltip.html(json.question[qID].concept_name);
   if (currentQuestion == 0) {
     currentQuestion = 1;
