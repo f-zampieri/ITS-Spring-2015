@@ -62,11 +62,11 @@ nextB.on('click', function(){
   currentQuestion = 0;
   currentBranch++;
   nodes = setNodeData(json.branch[currentBranch]);
-  //node.exit().remove();
   node.data(nodes);
   qID = nodes[0].questionID;
   question.property("value", json.question[qID].question);
   tooltip.html(json.question[qID].concept_name);
+  question.html(json.question[qID].question);
   //debugger;
 });
 
@@ -242,6 +242,19 @@ nextQ.on('click', function() {
   if (currentQuestion == 0) {
     currentQuestion = 1;
   }
+});
+
+var prevQ = d3.select("#pre-question");
+prevQ.on('click', function() {
+  currentQuestion--;
+  if (currentQuestion < 0) {
+    currentQuestion = 0;
+  } else if (currentQuestion == 1) {
+    currentQuestion = 0;
+  }
+  qID = nodes[currentQuestion].questionID;
+  question.html(json.question[qID].question);
+  tooltip.html(json.question[qID].concept_name);
 });
 
 force.start();
