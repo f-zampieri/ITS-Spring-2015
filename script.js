@@ -60,12 +60,9 @@ var nextB = d3.select('#next-branch');
 
 nextB.on('click', function(){
   currentQuestion = 0;
-	currentBranch++;
-	nodes = setNodeData(json.branch[currentBranch]);
-	node.data(nodes).update();
-	//debugger;
   currentBranch++;
   nodes = setNodeData(json.branch[currentBranch]);
+  //debugger;
   node.data(nodes);
   qID = nodes[0].questionID;
   question.property("value", json.question[qID].question);
@@ -183,19 +180,6 @@ force.on('tick', function(e) {
     d3.select(this)
             .style('opacity', .5)
             .style('fill', palette.green)
-        console.log(d.questionID);
-		tooltip.html(json.question[d.questionID].concept_name);
-		//console.log(json.question[d.questionID].question);
-		question.property("value", json.question[d.questionID].question);
-    // start Francisco's code
-    currentQuestion = d.ndx;
-    if (currentQuestion > 0) {
-      currentQuestion++;
-    }
-    // end Francisco's code
-  })
-	.on('mouseout', function(d) {
-		d3.select(this).select("circle").attr('r', circleWidth )
         //console.log(d.questionID);
     tooltip.html(json.question[d.questionID].concept_name);
     question.html(function(){return json.question[d.questionID].question});
@@ -242,10 +226,6 @@ nextQ.on('click', function() {
     currentQuestion++;
   }
   if (currentQuestion > 15) {
-    currentQuestion = 15;
-  }
-  qID = nodes[currentQuestion].questionID;
-  question.property("value", json.question[qID].question);
     currentQuestion = 0;
     currentBranch++;
     nodes = setNodeData(json.branch[currentBranch]); 
