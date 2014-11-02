@@ -215,7 +215,6 @@ force.on('tick', function(e) {
   })
   .on('mouseout', function(d) {
     d3.select(this).select("circle").attr('r', circleWidth )
->>>>>>> Francisco
         d3.select(this)
             .style('opacity', 1)
             .style('fill', tempColor)
@@ -271,12 +270,16 @@ prevQ.on('click', function() {
   currentQuestion--;
   if (currentQuestion < 0) {
     currentQuestion = 0;
-  } else if (currentQuestion == 1) {
-    currentQuestion = 0;
   }
-  qID = nodes[currentQuestion].questionID;
-  question.html(json.question[qID].question);
-  tooltip.html(json.question[qID].concept_name);
+  if (currentQuestion == 1) {
+    qID = nodes[0].questionID;
+    question.html(json.question[qID].question);
+    tooltip.html(json.question[qID].concept_name);
+  } else {
+    qID = nodes[currentQuestion].questionID;
+    question.html(json.question[qID].question);
+    tooltip.html(json.question[qID].concept_name);
+  }
 });
 
 force.start();
