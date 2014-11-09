@@ -1,11 +1,19 @@
 d3.json("file.json", function(error, json){
 
+// things to be kept track of
 var currentBranch = 0;
 var currentQuestion = 0;
 var currentAnswer = "";
+var currentScore = 0;
+
+// constants
+var T1 = 6.25;
+var T2 = 3.125;
+var T3 = 1.5625;
+var T4 = .78125;
 var wrong = -1;
 var records = [];
-
+var MAX_SCORE = 6.25;
 var   w = 250,
       h = 250;
 var circleWidth = 12;
@@ -41,30 +49,34 @@ nodes = setNodeData(json.branch[currentBranch]);
 function setNodeData(branch){
   //console.log(branch);
 var nodes = [
-      { name: "1st Parent ", ndx: 0, questionID: branch[0]},
-      { name: "2nd Parent ", target: [0], questionID: "Next Branch"},
-      { name: "2nd Tier", ndx: 2, target: [0], questionID: branch[1]},
-      { name: "2nd Tier", ndx: 3, target: [0], questionID: branch[2]},
-      { name: "3rd Tier", ndx: 4, target: [2], questionID: branch[3]},
-      { name: "3rd Tier", ndx: 5, target: [2], questionID: branch[4]},
-      { name: "3rd Tier", ndx: 6, target: [3], questionID: branch[5]},
-      { name: "3rd Tier", ndx: 7, target: [3], questionID: branch[6]},
-      { name: "4th Tier", ndx: 8, target: [4], questionID: branch[7]},
-      { name: "4th Tier", ndx: 9, target: [4], questionID: branch[8]},
-      { name: "4th Tier", ndx: 10, target: [5], questionID: branch[9]},
-      { name: "4th Tier", ndx: 11, target: [5], questionID: branch[10]},
-      { name: "4th Tier", ndx: 12, target: [6], questionID: branch[11]},
-      { name: "4th Tier", ndx: 13, target: [6], questionID: branch[12]},
-      { name: "4th Tier", ndx: 14, target: [7], questionID: branch[13]},
-      { name: "4th Tier", ndx: 15, target: [7], questionID: branch[14]}
+      { name: "1st Parent ", ndx: 0, score: T1, color: palette.gray, questionID: branch[0]},
+      { name: "2nd Parent ", color: palette.gray, target: [0], questionID: "Next Branch"},
+      { name: "2nd Tier", ndx: 2, score: T2, color: palette.gray, target: [0], questionID: branch[1]},
+      { name: "2nd Tier", ndx: 3, score: T2, color: palette.gray, target: [0], questionID: branch[2]},
+      { name: "3rd Tier", ndx: 4, score: T3, color: palette.gray, target: [2], questionID: branch[3]},
+      { name: "3rd Tier", ndx: 5, score: T3, color: palette.gray, target: [2], questionID: branch[4]},
+      { name: "3rd Tier", ndx: 6, score: T3, color: palette.gray, target: [3], questionID: branch[5]},
+      { name: "3rd Tier", ndx: 7, score: T3, color: palette.gray, target: [3], questionID: branch[6]},
+      { name: "4th Tier", ndx: 8, score: T4, color: palette.gray, target: [4], questionID: branch[7]},
+      { name: "4th Tier", ndx: 9, score: T4, color: palette.gray, target: [4], questionID: branch[8]},
+      { name: "4th Tier", ndx: 10, score:T4, color: palette.gray, target: [5], questionID: branch[9]},
+      { name: "4th Tier", ndx: 11, score:T4, color: palette.gray, target: [5], questionID: branch[10]},
+      { name: "4th Tier", ndx: 12, score:T4, color: palette.gray, target: [6], questionID: branch[11]},
+      { name: "4th Tier", ndx: 13, score:T4, color: palette.gray, target: [6], questionID: branch[12]},
+      { name: "4th Tier", ndx: 14, score:T4, color: palette.gray, target: [7], questionID: branch[13]},
+      { name: "4th Tier", ndx: 15, score:T4, color: palette.gray, target: [7], questionID: branch[14]}
 ];
   return nodes;
 }
 
 var nextB = d3.select('#next-branch');
 
-nextB.on('click', function(){
-  if (document.getElementById("manual").checked == true) {
+nextB.on('click', function() {
+  nextBranch();
+});
+function nextBranch() {
+  if (document.getElementById("manual").checked == true
+    || (document.getElementById("auto").checked == true && currentScore >= MAX_SCORE)) {
     currentQuestion = 0;
     currentBranch++;
     nodes = setNodeData(json.branch[currentBranch]);
@@ -76,11 +88,11 @@ nextB.on('click', function(){
     question.html(json.question[qID].question);
     updatePosition();
   }
-});
+}
 
 var links = [];
 
-for (var i = 0; i< nodes.length; i++) {
+for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].target !== undefined) {
             for (var x = 0; x< nodes[i].target.length; x++ ) {
                   links.push({
@@ -120,11 +132,8 @@ node.append('circle')
     if (currentQuestion == d.ndx) return circleWidth*2;
     return circleWidth;
     })
-  .attr('fill', function(d, i) {
-        if (i <= 1) { return palette.blue}
-        else if (i == 2 || i == 3) {return palette.green}
-        else if (i >= 4 && i < 8) { return palette.red}
-        else { return palette.yellow}
+  .attr('fill', function(d) {
+      return d.color;
   })
   .style('opacity', function(d){
     if (d.ndx == currentQuestion) return .5;
@@ -195,6 +204,7 @@ force.on('tick', function(e) {
     return 'translate('+ d.x +', '+ d.y +')';
   })
   .on('mouseover', function(d){
+    console.log(d);
     //debugger;
     //d.circle.r = circleWidth * 2
     tooltip.transition()
@@ -298,23 +308,44 @@ var submitB = d3.select("#submit");
 submitB.on('click', function() {
      //console.log("current question is from submit" + currentQuestion);
     currentAnswer = json.question[nodes[currentQuestion].questionID].answers;    
-
+  var random = Math.random();
   console.log(currentAnswer);
-  if (currentAnswer == currentAnswer*wrong){
+  if (random >= .5) {
     //records.append("right");
     records += " right";
+    currentScore += nodes[currentQuestion].score;
+    changeColor(true);
   } else {
     //records.append("wrong");
     records += " wrong";
+    changeColor(false);
+  }
+  if (currentScore >= MAX_SCORE) {
+    nextBranch();
+    currentScore = 0;
+    // TO-DO: update score on screen
+  } else {
+    nextQFunc();
+    updatePosition();
+     //console.log("current question is from after" + currentQuestion);
   }
   wrong = wrong * -1;
-  nextQFunc();
-  updatePosition();
-   //console.log("current question is from after" + currentQuestion);
   console.log(records);
+  console.log(currentScore + " current score " + currentQuestion + " current question");
 });
 
-
+function changeColor(isRight) {
+  if (isRight) {
+    nodes[currentQuestion].color = palette.green;
+  } else {
+    nodes[currentQuestion].color = palette.red;
+  }
+  node.data(nodes);
+  node.select("circle")
+  .attr('fill', function(d){
+    return d.color;
+  });
+}
 
 force.start();
 })
