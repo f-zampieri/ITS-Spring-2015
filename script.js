@@ -323,6 +323,10 @@ submitB.on('click', function() {
   if (currentScore >= MAX_SCORE) {
     nextBranch();
     currentScore = 0;
+    node.select("circle")
+      .attr('fill', function(d) {
+        return palette.gray;
+      });
     // TO-DO: update score on screen
   } else {
     nextQFunc();
@@ -335,6 +339,15 @@ submitB.on('click', function() {
 });
 
 function changeColor(isRight) {
+  /*node.select("circle")
+  .attr('fill', function(d){
+    if (d.ndx == currentQuestion && isRight) {
+      return palette.green;
+    } else if (d.ndx == currentQuestion && !isRight) {
+      return palette.red;
+    }
+    return palette.gray;
+  });*/
   if (isRight) {
     nodes[currentQuestion].color = palette.green;
   } else {
