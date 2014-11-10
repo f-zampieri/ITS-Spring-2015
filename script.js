@@ -5,6 +5,7 @@ var currentBranch = 0;
 var currentQuestion = 0;
 var currentAnswer = "";
 var currentScore = 0;
+var sumScore = 0;
 
 // constants
 var T1 = 6.25;
@@ -17,11 +18,22 @@ var MAX_SCORE = 6.25;
 var   w = 250,
       h = 250;
 var circleWidth = 12;
-var tooltip = d3.select('#tree').append('div')
+var tooltip = d3.select('#tooltip').append('div')
         .style('position', 'absolute')
         .style('padding', '0 15px')
         .style('background', 'pink')    
-    .style('font-weight', 'bold');
+        .style('font-weight', 'bold');
+
+var score = d3.select('#score').append('div')
+        .style('position', 'absolute')
+        .style('padding', '0 15px')
+        .style('background', 'pink')    
+        .style('font-weight', 'bold');
+var totalScore = d3.select('#totalScore').append('div')
+        .style('position', 'absolute')
+        .style('padding', '0 15px')
+        .style('background', 'pink')    
+        .style('font-weight', 'bold');
 
 var question = d3.select("#question-content").append('tspan');
 var answer = d3.select("#answer-content").append('tspan');
@@ -45,26 +57,33 @@ var palette = {
       "yellowgreen": "#738A05"
   }
 var nodes = [];
-nodes = setNodeData(json.branch[currentBranch]);
-function setNodeData(branch){
-  //console.log(branch);
+nodes = setNodeData(currentBranch);
+
+function setNodeData(branchID){
+var branch = json.branch[branchID];
+// console.log(branch);
+// var preBQ = 0;
+// if (branchID > 0){
+//    preBQ = json.branch[branchID - 1][0];
+// }
+// var postBQ = json.branch[branchID + 1];
+// console.log(postBQ);
 var nodes = [
       { name: "1st Parent ", ndx: 0, score: T1, color: palette.gray, questionID: branch[0]},
-      { name: "2nd Parent ", color: palette.gray, target: [0], questionID: "Next Branch"},
-      { name: "2nd Tier", ndx: 2, score: T2, color: palette.gray, target: [0], questionID: branch[1]},
-      { name: "2nd Tier", ndx: 3, score: T2, color: palette.gray, target: [0], questionID: branch[2]},
-      { name: "3rd Tier", ndx: 4, score: T3, color: palette.gray, target: [2], questionID: branch[3]},
-      { name: "3rd Tier", ndx: 5, score: T3, color: palette.gray, target: [2], questionID: branch[4]},
-      { name: "3rd Tier", ndx: 6, score: T3, color: palette.gray, target: [3], questionID: branch[5]},
-      { name: "3rd Tier", ndx: 7, score: T3, color: palette.gray, target: [3], questionID: branch[6]},
-      { name: "4th Tier", ndx: 8, score: T4, color: palette.gray, target: [4], questionID: branch[7]},
-      { name: "4th Tier", ndx: 9, score: T4, color: palette.gray, target: [4], questionID: branch[8]},
-      { name: "4th Tier", ndx: 10, score:T4, color: palette.gray, target: [5], questionID: branch[9]},
-      { name: "4th Tier", ndx: 11, score:T4, color: palette.gray, target: [5], questionID: branch[10]},
-      { name: "4th Tier", ndx: 12, score:T4, color: palette.gray, target: [6], questionID: branch[11]},
-      { name: "4th Tier", ndx: 13, score:T4, color: palette.gray, target: [6], questionID: branch[12]},
-      { name: "4th Tier", ndx: 14, score:T4, color: palette.gray, target: [7], questionID: branch[13]},
-      { name: "4th Tier", ndx: 15, score:T4, color: palette.gray, target: [7], questionID: branch[14]}
+      { name: "2nd Tier", ndx: 1, score: T2, color: palette.gray, target: [0], questionID: branch[1]},
+      { name: "2nd Tier", ndx: 2, score: T2, color: palette.gray, target: [0], questionID: branch[2]},
+      { name: "3rd Tier", ndx: 3, score: T3, color: palette.gray, target: [1], questionID: branch[3]},
+      { name: "3rd Tier", ndx: 4, score: T3, color: palette.gray, target: [1], questionID: branch[4]},
+      { name: "3rd Tier", ndx: 5, score: T3, color: palette.gray, target: [2], questionID: branch[5]},
+      { name: "3rd Tier", ndx: 6, score: T3, color: palette.gray, target: [2], questionID: branch[6]},
+      { name: "4th Tier", ndx: 7, score: T4, color: palette.gray, target: [3], questionID: branch[7]},
+      { name: "4th Tier", ndx: 8, score: T4, color: palette.gray, target: [3], questionID: branch[8]},
+      { name: "4th Tier", ndx: 9, score:T4, color: palette.gray, target: [4], questionID: branch[9]},
+      { name: "4th Tier", ndx: 10, score:T4, color: palette.gray, target: [4], questionID: branch[10]},
+      { name: "4th Tier", ndx: 11, score:T4, color: palette.gray, target: [5], questionID: branch[11]},
+      { name: "4th Tier", ndx: 12, score:T4, color: palette.gray, target: [5], questionID: branch[12]},
+      { name: "4th Tier", ndx: 13, score:T4, color: palette.gray, target: [6], questionID: branch[13]},
+      { name: "4th Tier", ndx: 14, score:T4, color: palette.gray, target: [6], questionID: branch[14]}
 ];
   return nodes;
 }
@@ -75,19 +94,16 @@ nextB.on('click', function() {
   nextBranch();
 });
 function nextBranch() {
-  if (document.getElementById("manual").checked == true
-    || (document.getElementById("auto").checked == true && currentScore >= MAX_SCORE)) {
     currentQuestion = 0;
     currentBranch++;
-    nodes = setNodeData(json.branch[currentBranch]);
-    //debugger;
+    nodes = setNodeData(currentBranch);
     node.data(nodes);
-    qID = nodes[0].questionID;
-    question.property("value", json.question[qID].question);
-    tooltip.html(json.question[qID].concept_name);
-    question.html(json.question[qID].question);
+    node.select("circle")
+      .attr('fill', function(d) {
+        return palette.gray;
+      });
+    updateQ();
     updatePosition();
-  }
 }
 
 var links = [];
@@ -150,7 +166,6 @@ function updatePosition(){
     if (d.ndx == currentQuestion) return .5;
     return 1;
   })
-
 }
 
 var tempColor;
@@ -161,36 +176,39 @@ force.on('tick', function(e) {
   .attr('transform', function(d, i) {
         d.fixed = true;
         if (i == 0) d.x = 250;
-        if (i == 1) d.x = 375;
+        // if (i == 16) d.x = 375;
+        // if (i == 15) d.x = 125;
 
-        if (i == 2)  d.x = 150;
-        if (i == 3)  d.x = 350;
+        if (i == 1)  d.x = 150;
+        if (i == 2)  d.x = 350;
         
-        if (i == 4)  d.x = 100;
-        if (i == 5)  d.x = 200;
-        if (i == 6)  d.x = 300;
-        if (i == 7)  d.x = 400;
+        if (i == 3)  d.x = 100;
+        if (i == 4)  d.x = 200;
+        if (i == 5)  d.x = 300;
+        if (i == 6)  d.x = 400;
         
-        if (i == 8)  d.x = 75;
-        if (i == 9)  d.x = 125;
-        if (i == 10)  d.x = 175;
-        if (i == 11)  d.x = 225;
-        if (i == 12)  d.x = 275;
-        if (i == 13)  d.x = 325;
-        if (i == 14)  d.x = 375;
-        if (i == 15)  d.x = 425;
+        if (i == 7)  d.x = 75;
+        if (i == 8)  d.x = 125;
+        if (i == 9)  d.x = 175;
+        if (i == 10)  d.x = 225;
+        if (i == 11)  d.x = 275;
+        if (i == 12)  d.x = 325;
+        if (i == 13)  d.x = 375;
+        if (i == 14)  d.x = 425;
         
         if (i == 0)  d.y = 100;
-        if (i == 1)  d.y = 100;
+        // if (i == 16) d.x = 100;
+        // if (i == 15) d.x = 100;
         
+        if (i == 1)  d.y = 200;
         if (i == 2)  d.y = 200;
-        if (i == 3)  d.y = 200;
         
+        if (i == 3)  d.y = 300;
         if (i == 4)  d.y = 300;
         if (i == 5)  d.y = 300;
         if (i == 6)  d.y = 300;
-        if (i == 7)  d.y = 300;
         
+        if (i == 7)  d.y = 400;
         if (i == 8)  d.y = 400;
         if (i == 9)  d.y = 400;
         if (i == 10)  d.y = 400;
@@ -198,34 +216,28 @@ force.on('tick', function(e) {
         if (i == 12)  d.y = 400;
         if (i == 13)  d.y = 400;
         if (i == 14)  d.y = 400;
-        if (i == 15)  d.y = 400;
+
     d.y = d.y/2;
     d.x = d.x/2;
     return 'translate('+ d.x +', '+ d.y +')';
   })
   .on('mouseover', function(d){
-    console.log(d);
-    //debugger;
-    //d.circle.r = circleWidth * 2
     tooltip.transition()
             .style('opacity', 0.9)
-    tempColor = this.style.fill;
-        //console.log(d.questionID);
+    //tempColor = this.style.fill;
     if (document.getElementById("manual").checked == true) {
       tooltip.html(json.question[d.questionID].concept_name);
-      question.html(function(){return json.question[d.questionID].question});
-      question.property("value", json.question[d.questionID].question);
-      answer.html(function(){return json.question[d.questionID].answers});
-      question.property("value", json.question[d.questionID].answers);
-      // start Francisco's code
+      question.html(json.question[d.questionID].question);
+      answer.html(json.question[d.questionID].answers);
+
       currentQuestion = d.ndx;
       updatePosition();
       currentAnswer = json.question[nodes[currentQuestion].questionID].answers;
       console.log(currentAnswer);
+      //I don't understand this if statement, sen
       if (currentQuestion == 0) {
         tooltip.html(json.question[nodes[0].questionID].concept_name);
         question.html(json.question[nodes[0].questionID].question);
-        question.property("value", json.question[nodes[0].questionID].question);
       }
     }
   })
@@ -246,29 +258,34 @@ continues clicking next question, then it will remain on the
 last node of the tree.
 */
 var nextQ = d3.select("#next-question");
-var qID = nodes[0].questionID;
+var qID;
+if (currentQuestion == 0) {
+  updateQ();
+}
 
-function nextQFunc() {
-  currentQuestion++;
-  if (currentQuestion == 1) currentQuestion++;
-  if (currentQuestion > 15) {
-    currentQuestion = 0;
-    currentBranch++;
-    nodes = setNodeData(json.branch[currentBranch]); 
-    node.data(nodes);
-  }
-  currentAnswer = json.question[nodes[currentQuestion].questionID].answers;
- // console.log("next question " + currentAnswer);
+function updateQ(){
   qID = nodes[currentQuestion].questionID;
+  currentAnswer = json.question[qID].answers;
   answer.html(json.question[qID].answers);
   question.html(json.question[qID].question);
   tooltip.html(json.question[qID].concept_name);
+  score.html(currentScore);
+  totalScore.html(sumScore);
+}
+
+function nextQFunc() {
+  currentQuestion++;
+  if (currentQuestion > 14) {
+    nextBranch();
+  }
+  updateQ();
+  console.log("current question is in next Q " + currentQuestion);
+  updatePosition();
 }
 
 nextQ.on('click', function() {
   if (document.getElementById("manual").checked == true) {
     nextQFunc();
-    updatePosition();
   }
 });
 
@@ -279,28 +296,24 @@ function prevQFunc() {
   if (currentBranch == 0 && currentQuestion == -1){
     currentQuestion++;
   }
-  //avoid the dump question 
-  if (currentQuestion == 1) {
-    currentQuestion = 0;
-  }
   //from previous branch
   if (currentQuestion < 0 && currentBranch > 0) {
-    currentQuestion = 15;
+    currentQuestion = 14;
     currentBranch--;
-    nodes = setNodeData(json.branch[currentBranch]); 
+    nodes = setNodeData(currentBranch); 
     node.data(nodes);
+    node.select("circle")
+      .attr('fill', function(d) {
+        return palette.gray;
+      });
   } 
-   currentAnswer = json.question[nodes[currentQuestion].questionID].answers;
-   qID = nodes[currentQuestion].questionID;
-   answer.html(json.question[qID].answers);
-   question.html(json.question[qID].question);
-   tooltip.html(json.question[qID].concept_name);
+  updateQ();
+  updatePosition();
 }
 
 prevQ.on('click', function() {
   if (document.getElementById("manual").checked == true) {
     prevQFunc();
-    updatePosition();
   }
 });
 
@@ -314,24 +327,19 @@ submitB.on('click', function() {
     //records.append("right");
     records += " right";
     currentScore += nodes[currentQuestion].score;
+    sumScore += nodes[currentQuestion].score;
     changeColor(true);
   } else {
     //records.append("wrong");
     records += " wrong";
     changeColor(false);
   }
-  if (currentScore >= MAX_SCORE) {
+  if (currentScore >= MAX_SCORE && document.getElementById("auto").checked == true) {
     nextBranch();
     currentScore = 0;
-    node.select("circle")
-      .attr('fill', function(d) {
-        return palette.gray;
-      });
-    // TO-DO: update score on screen
   } else {
     nextQFunc();
-    updatePosition();
-     //console.log("current question is from after" + currentQuestion);
+    console.log("current question is from after" + currentQuestion);
   }
   wrong = wrong * -1;
   console.log(records);
@@ -339,15 +347,6 @@ submitB.on('click', function() {
 });
 
 function changeColor(isRight) {
-  /*node.select("circle")
-  .attr('fill', function(d){
-    if (d.ndx == currentQuestion && isRight) {
-      return palette.green;
-    } else if (d.ndx == currentQuestion && !isRight) {
-      return palette.red;
-    }
-    return palette.gray;
-  });*/
   if (isRight) {
     nodes[currentQuestion].color = palette.green;
   } else {

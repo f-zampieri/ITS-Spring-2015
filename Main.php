@@ -20,7 +20,14 @@ Model::writeToJson(1243);
 	<div class="container">
 		<h2>ITS Tree</h2>
 		<div class="first-row">
-			<div class="col-md-3" id = "tree"></div>
+			<div class="col-md-3" id = "tree">
+				<div class="col-md-3" id = "score">
+				</div> <br>
+				<div class="col-md-3" id = "totalScore">
+				</div> <br>
+				<div class="col-md-3" id = "tooltip">
+				</div><br><br>
+			</div>
 			<div class="btn-group btn-group-md">
 				<button type="button" class="btn btn-default" id="next-branch">Next Branch</button>
 				<button type="button" class="btn btn-default" id="pre-question">Previous Question</button>
