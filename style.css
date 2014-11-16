@@ -7,19 +7,11 @@
 	.question-label-column { 
 		padding-right: 0px; 
 	}
-/*
-	.question-content-column { 
-		text-align: left;
-		padding-left: 0px; 
-	}
-*/
-/*
-	#question-content {
-		cursor: pointer;
-	}
-*/
+
 	#submit { 
 		margin-top: 30px;
 		padding: 10px 120px; 
 	}
-
+	input[type="radio"] {
+	    transform: scale(3);
+	}

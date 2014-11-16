@@ -1,5 +1,16 @@
 d3.json("file.json", function(error, json){
 
+
+/*
+  TO DO LIST
+  1. CLEAN UP CODE: modularize code as much you can 
+    check reduntent code and raw scripts then mododularize them into functions
+  2. FINISH STAT TABLE(this table should update in real time)
+    this table should have the following:
+    (1) total socre and the score within a branch level.
+    (2) # of attemped and corrected questions for each tiers
+*/
+
 // things to be kept track of
 var currentBranch = 0;
 var currentQuestion = 0;
@@ -18,6 +29,56 @@ var MAX_SCORE = 6.25;
 var   w = 250,
       h = 250;
 var circleWidth = 12;
+
+function isAutoMode(){
+  return !document.getElementById("manual").checked;
+}
+var modes = d3.selectAll("input[name = mode]");
+modes.on('change', function(){
+  if(isAutoMode()){
+     d3.select('#ProgressBars').attr('style', "display: block;");
+   } else{
+    d3.select('#ProgressBars').attr('style', "display: none;");
+   }
+})
+
+function updateProgress(){
+    d3.select('#totalProgress').attr('value', currentBranch+1);
+    d3.select('#subProgress').attr('value', currentScore);
+}
+
+function getBasesName(){
+  var names = [];
+  var index;
+  var cName;
+  var qid;
+  for (var i = 0; i < 16; i++){
+    index = i;
+    qid = json.branch[i][0]
+    cName = json.question[qid].concept_name
+    names.push(index + "_" + cName);
+  }
+  return names;
+}
+var menuSelect = d3.select("#menuSelect");
+  menuSelect.selectAll('option')
+  .data(getBasesName()).enter()
+  .append("option")
+  .attr('value', function(d){
+    return d.split("_")[0];
+  })
+  .text(function(d) { 
+    return d.split("_")[1];
+  });
+
+menuSelect.on('change', function(){
+  currentBranch = this.options[this.selectedIndex].value;
+  updateBranch();
+})
+
+
+
+
 var tooltip = d3.select('#tooltip').append('div')
         .style('position', 'absolute')
         .style('padding', '0 15px')
@@ -61,13 +122,6 @@ nodes = setNodeData(currentBranch);
 
 function setNodeData(branchID){
 var branch = json.branch[branchID];
-// console.log(branch);
-// var preBQ = 0;
-// if (branchID > 0){
-//    preBQ = json.branch[branchID - 1][0];
-// }
-// var postBQ = json.branch[branchID + 1];
-// console.log(postBQ);
 var nodes = [
       { name: "1st Parent ", ndx: 0, score: T1, color: palette.gray, questionID: branch[0]},
       { name: "2nd Tier", ndx: 1, score: T2, color: palette.gray, target: [0], questionID: branch[1]},
@@ -87,16 +141,17 @@ var nodes = [
 ];
   return nodes;
 }
-
 var nextB = d3.select('#next-branch');
 
 nextB.on('click', function() {
-  nextBranch();
+  currentBranch++;
+  updateBranch();
 });
-function nextBranch() {
-    currentQuestion = 0;
-    currentBranch++;
-    nodes = setNodeData(currentBranch);
+
+function updateBranch(){
+  currentQuestion = 0;
+  document.getElementById("menuSelect").selectedIndex = currentBranch;
+  nodes = setNodeData(currentBranch);
     node.data(nodes);
     node.select("circle")
       .attr('fill', function(d) {
@@ -171,7 +226,6 @@ function updatePosition(){
 var tempColor;
 //console.log(nodes);
 force.on('tick', function(e) {
-
   node
   .attr('transform', function(d, i) {
         d.fixed = true;
@@ -225,7 +279,7 @@ force.on('tick', function(e) {
     tooltip.transition()
             .style('opacity', 0.9)
     //tempColor = this.style.fill;
-    if (document.getElementById("manual").checked == true) {
+    if (!isAutoMode()) {
       tooltip.html(json.question[d.questionID].concept_name);
       question.html(json.question[d.questionID].question);
       answer.html(json.question[d.questionID].answers);
@@ -257,6 +311,8 @@ If it reaches the last node in the tree and the user
 continues clicking next question, then it will remain on the
 last node of the tree.
 */
+
+//initilize the first question when start, and positions
 var nextQ = d3.select("#next-question");
 var qID;
 if (currentQuestion == 0) {
@@ -271,12 +327,14 @@ function updateQ(){
   tooltip.html(json.question[qID].concept_name);
   score.html(currentScore);
   totalScore.html(sumScore);
+  updateProgress();
 }
 
 function nextQFunc() {
   currentQuestion++;
   if (currentQuestion > 14) {
-    nextBranch();
+    currentBranch++;
+    updateBranch();
   }
   updateQ();
   console.log("current question is in next Q " + currentQuestion);
@@ -284,7 +342,7 @@ function nextQFunc() {
 }
 
 nextQ.on('click', function() {
-  if (document.getElementById("manual").checked == true) {
+  if (!isAutoMode()) {
     nextQFunc();
   }
 });
@@ -300,19 +358,14 @@ function prevQFunc() {
   if (currentQuestion < 0 && currentBranch > 0) {
     currentQuestion = 14;
     currentBranch--;
-    nodes = setNodeData(currentBranch); 
-    node.data(nodes);
-    node.select("circle")
-      .attr('fill', function(d) {
-        return palette.gray;
-      });
+    updateBranch();
   } 
   updateQ();
   updatePosition();
 }
 
 prevQ.on('click', function() {
-  if (document.getElementById("manual").checked == true) {
+  if (!isAutoMode()) {
     prevQFunc();
   }
 });
@@ -334,8 +387,9 @@ submitB.on('click', function() {
     records += " wrong";
     changeColor(false);
   }
-  if (currentScore >= MAX_SCORE && document.getElementById("auto").checked == true) {
-    nextBranch();
+  if (currentScore >= MAX_SCORE && isAutoMode()) {
+    currentBranch++;
+    updateBranch();
     currentScore = 0;
   } else {
     nextQFunc();

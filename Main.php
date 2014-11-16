@@ -15,6 +15,7 @@ Model::writeToJson(1243);
   <link rel="stylesheet" href="d3/base.css">
   <link rel="stylesheet" href="style.css">
    <!-- js files -->
+
 </head>
 <body>
 	<div class="container">
@@ -26,20 +27,42 @@ Model::writeToJson(1243);
 				<div class="col-md-3" id = "totalScore">
 				</div> <br>
 				<div class="col-md-3" id = "tooltip">
-				</div><br><br>
+				</div> <br>
+				<br>
 			</div>
-			<div class="btn-group btn-group-md">
-				<button type="button" class="btn btn-default" id="next-branch">Next Branch</button>
+			<div class="btn-group btn-group-md" id = "buttonsGroup">
+				<!-- <button type="button" class="btn btn-default" id="next-branch">Next Branch</button> -->
 				<button type="button" class="btn btn-default" id="pre-question">Previous Question</button>
 				<button type="button" class="btn btn-default" id="next-question">Next Question</button>
+				<select id = "menuSelect"></select>
+				<!-- <div class="btn-group">
+				  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				     Branch <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" role="menu">
+				    <li><a href="#">Action</a></li>
+				    <li><a href="#">Another action</a></li>
+				    <li><a href="#">Something else here</a></li>
+				    <li class="divider"></li>
+				    <li><a href="#">Separated link</a></li>
+				  </ul>
+				</div> -->
 			</div>
-			<div></div>
+			<br><br>
 			<div class="mode">
-				<input type="radio" value="manual" name="mode" id="manual" checked="true"> Manual <br>
-				<input type="radio" value="auto" name="mode" id="auto"> Auto
+				<input type="radio" name="mode" id="manual" checked="true"> &nbsp Manual 
+				<br><br>
+				<input type="radio" name="mode" id="auto"> &nbsp Auto
 			</div>
 		</div>
-	</div> <!-- container-->
+		<br>
+		<div id = "ProgressBars" style = "display: none;">
+			<p>SubProcess</P>
+			<progress max="6.25" id = "subProgress"></progress>
+			<p>Total Process</P>
+			<progress max="16"  id = "totalProgress"></progress>
+		</div>
+	</div> 
 
 	<div class="question-answer">
 		<div class="question-area container">
@@ -54,24 +77,12 @@ Model::writeToJson(1243);
 			</div>
 			<div id = "answer-content"></div>
 		</div>
-<!--
-		<div class="answer-area container">
-			<div class="col-xs-2 question-label-column">
-				<p class="question-label">Answer: </p>
-			</div>
-			<div class="col-xs-10 question-content-column">
-				<select id ="answer "multiple class="form-control">
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
-					<option>5</option>
-				</select>
-			</div>
-		</div>
--->
 		<button class="btn btn-success" id="submit">Submit</button>
 	</div>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
 	<script src="d3/d3.min.js"></script>
 	<script src="script.js"></script>
 </body>
