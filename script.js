@@ -60,8 +60,23 @@ function getBasesName(){
   }
   return names;
 }
-var menuSelect = d3.select("#menuSelect");
-  menuSelect.selectAll('option')
+
+function getQuestionsName(){
+  var names = [];
+  var index;
+  var cName;
+  var qid;
+  for (var i = 0; i < 15; i++){
+    index = i;
+    qid = json.branch[currentBranch][i]
+    cName = json.question[qid].concept_name
+    names.push(index + "_" + cName);
+  }
+  return names;
+}
+
+var menuSelectB = d3.select("#menuSelectB");
+  menuSelectB.selectAll('option')
   .data(getBasesName()).enter()
   .append("option")
   .attr('value', function(d){
@@ -71,19 +86,45 @@ var menuSelect = d3.select("#menuSelect");
     return d.split("_")[1];
   });
 
-menuSelect.on('change', function(){
+var menuSelectQ = d3.select("#menuSelectQ");
+  menuSelectQ.selectAll('option')
+  .data(getQuestionsName()).enter()
+  .append("option")
+  .attr('value', function(d){
+    return d.split("_")[0];
+  })
+  .text(function(d) { 
+    return d.split("_")[1];
+  });
+
+menuSelectB.on('change', function(){
   currentBranch = this.options[this.selectedIndex].value;
   updateBranch();
+  menuSelectQ.selectAll('option')
+  .data(getQuestionsName())
+  .attr('value', function(d){
+    return d.split("_")[0];
+  })
+  .text(function(d) { 
+    return d.split("_")[1];
+  });
+  updateQ();
+})
+
+menuSelectQ.on('change', function(){
+  currentQuestion = this.options[this.selectedIndex].value;
+  updateQ();
+  updatePosition();
 })
 
 
 
 
-var tooltip = d3.select('#tooltip').append('div')
+var tooltip = d3.select('body').append('div')
         .style('position', 'absolute')
-        .style('padding', '0 15px')
-        .style('background', 'pink')    
-        .style('font-weight', 'bold');
+        .style('padding', '0 10px')
+        .style('background', 'white')    
+        .style('opacity', 0);
 
 var score = d3.select('#score').append('div')
         .style('position', 'absolute')
@@ -150,7 +191,7 @@ nextB.on('click', function() {
 
 function updateBranch(){
   currentQuestion = 0;
-  document.getElementById("menuSelect").selectedIndex = currentBranch;
+  document.getElementById("menuSelectB").selectedIndex = currentBranch;
   nodes = setNodeData(currentBranch);
     node.data(nodes);
     node.select("circle")
@@ -280,7 +321,9 @@ force.on('tick', function(e) {
             .style('opacity', 0.9)
     //tempColor = this.style.fill;
     if (!isAutoMode()) {
-      tooltip.html(json.question[d.questionID].concept_name);
+      tooltip.html(json.question[d.questionID].concept_name)
+      .style('left', (d3.event.pageX - 25) + 'px')
+      .style('top', (d3.event.pageY -15) + 'px');
       question.html(json.question[d.questionID].question);
       answer.html(json.question[d.questionID].answers);
 
@@ -320,6 +363,7 @@ if (currentQuestion == 0) {
 }
 
 function updateQ(){
+  document.getElementById("menuSelectQ").selectedIndex = currentQuestion;
   qID = nodes[currentQuestion].questionID;
   currentAnswer = json.question[qID].answers;
   answer.html(json.question[qID].answers);

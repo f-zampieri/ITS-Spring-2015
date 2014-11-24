@@ -32,21 +32,11 @@ Model::writeToJson(1243);
 			</div>
 			<div class="btn-group btn-group-md" id = "buttonsGroup">
 				<!-- <button type="button" class="btn btn-default" id="next-branch">Next Branch</button> -->
-				<button type="button" class="btn btn-default" id="pre-question">Previous Question</button>
-				<button type="button" class="btn btn-default" id="next-question">Next Question</button>
-				<select id = "menuSelect"></select>
-				<!-- <div class="btn-group">
-				  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-				     Branch <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu" role="menu">
-				    <li><a href="#">Action</a></li>
-				    <li><a href="#">Another action</a></li>
-				    <li><a href="#">Something else here</a></li>
-				    <li class="divider"></li>
-				    <li><a href="#">Separated link</a></li>
-				  </ul>
-				</div> -->
+				<button type="button" id="pre-question">Previous Question</button>
+				<button type="button" id="next-question">Next Question</button>
+				<br><br>
+				Base Name  <select id = "menuSelectB"></select>
+				Questions Name  <select id = "menuSelectQ"></select>
 			</div>
 			<br><br>
 			<div class="mode">
