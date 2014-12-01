@@ -375,6 +375,7 @@ function updateQ(){
 }
 
 function nextQFunc() {
+  if (currentQuestion != 15 && currentBranch != 16) {
   currentQuestion++;
   if (currentQuestion > 14) {
     currentBranch++;
@@ -383,6 +384,7 @@ function nextQFunc() {
   updateQ();
   console.log("current question is in next Q " + currentQuestion);
   updatePosition();
+  }
 }
 
 nextQ.on('click', function() {

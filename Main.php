@@ -22,9 +22,11 @@ Model::writeToJson(1243);
 		<h2>ITS Tree</h2>
 		<div class="first-row">
 			<div class="col-md-3" id = "tree">
-				<div class="col-md-3" id = "score">
-				</div> <br>
-				<div class="col-md-3" id = "totalScore">
+				<div id = "score">
+					<p>sub-score</p>
+				</div> <br><br>
+				<div id = "totalScore">
+					<p>total score</p>
 				</div> <br>
 				<div class="col-md-3" id = "tooltip">
 				</div> <br>
@@ -47,9 +49,9 @@ Model::writeToJson(1243);
 		</div>
 		<br>
 		<div id = "ProgressBars" style = "display: none;">
-			<p>SubProcess</P>
+			<p>SubProgress</P>
 			<progress max="6.25" id = "subProgress"></progress>
-			<p>Total Process</P>
+			<p>Total Progress</P>
 			<progress max="16"  id = "totalProgress"></progress>
 		</div>
 	</div> 
