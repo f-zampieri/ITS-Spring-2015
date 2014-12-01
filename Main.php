@@ -1,4 +1,10 @@
 <?php 
+/*
+Author: Sen Lin
+This scripts is the view of the MVC model;
+it diplays some simple html elements and creates unique DOM id for other scripts to refer.
+
+*/
 include 'Model.php';
 use \Model\Model as Model;
 Model::writeToJson(1243);

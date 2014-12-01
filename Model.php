@@ -1,37 +1,13 @@
 <?php namespace Model;
+
+/*
+Author: Sen Lin
+The model component of the MVC.
+This class takes Dao object and do all the logics
+
+*/
 include 'Dao.php';
 use \Dao\Dao as Dao;
-
-
-
-//~ 
-//~ $counter = 0;
-//~ $i = 0;
-//~ $data = 0;
-//~ $index = 1;
-//~ $bIndex = 0;
-//~ while ($data < 322){
-	//~ if ($counter < 240){
-		//~ $branch[$bIndex][] = $data;
-	//~ }
-	//~ $i++; $counter++;
-	//~ if ($i == $index){
-		//~ $bIndex++;
-		//~ if ($bIndex == 16){
-			//~ $bIndex = 0;
-		//~ }
-		//~ $i = 0;
-	//~ }
-	//~ if ($counter == 16 || $counter == 48 || $counter == 112){
-		//~ $index = $index * 2;
-		//~ $i = 0;
-		//~ $bindex = 0;
-	//~ }
-	//~ $data ++;
-//~ }
-//~ print_r($branch);
-
-
 
 
 
