@@ -15,6 +15,13 @@ Css file to deco
 		margin-top: 30px;
 		padding: 10px 120px; 
 	}
-	input[type="radio"] {
+
+	#qHeading {
+		margin-left: auto;
+    	margin-right: auto;
+	}
+	/*input[type="radio"] {
 	    transform: scale(3);
 	}
+*/
+

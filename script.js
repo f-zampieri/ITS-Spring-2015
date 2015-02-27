@@ -379,6 +379,7 @@ function nextQFunc() {
   updateQ();
   console.log("current question is in next Q " + currentQuestion);
   updatePosition();
+  document.getElementById('questionNumber').innerHTML = 'Question #' + (currentQuestion + 1);
   }
 }
 
@@ -403,6 +404,7 @@ function prevQFunc() {
   } 
   updateQ();
   updatePosition();
+  document.getElementById('questionNumber').innerHTML = 'Question #' + (currentQuestion + 1);
 }
 
 prevQ.on('click', function() {

@@ -25,14 +25,29 @@ Model::writeToJson(1243);
 </head>
 <body>
 	<div class="container">
-		<h2>ITS Tree</h2>
+		<div style="clear: both">
+			<h2 style="float: left">ITS Tree</h2>
+			<table id="qHeading">
+			<tr>
+				<td>
+					<button title='Previous Question' type="button" id="pre-question"><<</button>
+				</td>
+				<td>
+					<h2 id = "questionNumber">Question #1</h2>
+				</td>
+				<td>
+					<button title='Next Question' type="button" id="next-question">>></button>
+				</td>
+			</tr>
+			</table>
+		</div>
 		<div class="first-row">
 			<div class="col-md-3" id = "tree">
-				<div id = "score">
-					<p>sub-score</p>
-				</div> <br><br>
 				<div id = "totalScore">
-					<p>total score</p>
+					<p>Total Score</p>
+				</div> <br><br>
+				<div id = "score">
+					<p>This Question</p>
 				</div> <br>
 				<div class="col-md-3" id = "tooltip">
 				</div> <br>
@@ -40,9 +55,6 @@ Model::writeToJson(1243);
 			</div>
 			<div class="btn-group btn-group-md" id = "buttonsGroup">
 				<!-- <button type="button" class="btn btn-default" id="next-branch">Next Branch</button> -->
-				<button type="button" id="pre-question">Previous Question</button>
-				<button type="button" id="next-question">Next Question</button>
-				<br><br>
 				Base Name  <select id = "menuSelectB"></select>
 				Questions Name  <select id = "menuSelectQ"></select>
 			</div>
