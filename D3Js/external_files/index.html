@@ -1,0 +1,69 @@
+<html>
+<head>
+	<title>D3 script</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+// to load the data into the d3, you use the 
+
+	d3.json("https://dl.dropboxusercontent.com/u/42623754/external_data.json", function(error, data_vals){
+
+		var height = 1000
+		var width = 1000
+
+		var canvas = d3.select("body")
+						.append('svg')
+						.attr("width", width)
+						.attr("height", height);
+
+		// var colorScale = d3.scale.linear()
+		// 						.domain([d3.extent(data_vals)])
+		// 						.range(["blue", "red"]);
+
+		var colorScale = d3.scale.linear()
+							.domain([0, 100])
+							.range(['blue', 'red']);
+
+
+		var circles = canvas.selectAll("circle")
+							.data(data_vals)
+							.enter()
+								.append('circle')
+								.attr('r', function(d){
+									return d.age * 2;
+								})
+								.attr('cx', function(d){
+									return d.age * d.age % width;
+								})
+								.attr('cy', function(d){
+									return (d.age * 17 + 10) % height + 100;
+								})
+								.attr('fill', function(d){
+							return colorScale(d.age);
+						});
+
+		var text_labels = canvas.selectAll('text')
+								.data(data_vals)
+								.enter()
+									.append("text")
+									.attr("fill", 'white')
+									.attr('y', function(d){
+										return (d.age * 17 + 10 )% height + 100;
+									})
+									.attr("x", function(d){
+										return d.age * d.age % width;
+									})
+									.text(function(d){
+										return d.name;
+									})
+
+
+	});
+
+		
+
+	</script>
+</body>
+</html>

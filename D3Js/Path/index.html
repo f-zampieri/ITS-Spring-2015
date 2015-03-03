@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>D3 script</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+		var data = [
+			{x: 2, y :4},
+			{x: 10, y: 20},
+			{x: 40, y: 80}
+		]
+
+		var width = 1000;
+		var height = 1000;
+		var canvas = d3.select("body")
+						.append('svg')
+						.attr('width', width)
+						.attr('height', height);
+
+
+		var group = canvas.append('g')
+					.attr('transform','translate(100, 100');
+
+		//this is a path generator and this will translate the data to the path data string
+		var line = d3.svg.line()
+					.x(function(d){
+						return d.x * 25;
+					})
+					.y(function(d){
+						return d.y * 25;
+					})
+
+//notice that the data, has a another[], this is done to make the data singular
+		group.selectAll("path")
+				.data([data])
+				.enter()
+					.append("path")
+					.attr('d', line)
+					.attr('stroke', '#000')
+					.attr('stroke-width', 5);
+
+
+	</script>
+</body>
+</html>

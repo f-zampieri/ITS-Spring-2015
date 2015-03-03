@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+	<title>D3 script</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+	<p> this is a paragraph </p>
+	<script>
+		
+		var canvas = d3.select("body")
+						.append('svg')
+						.attr('width', 500)
+						.attr('height', 500);
+
+		var data_points = [20, 30, 90];
+
+		console.log(data_points);
+// the enter method contains place holders for each and every place holder element
+
+		var bars = canvas.selectAll('rect')
+					.data(data_points)
+					.enter()
+						.append('rect')
+						.attr('width', function(d){
+							return d * 10;
+						})
+						.attr('height', 50)
+						.attr('y', function(d, i){
+							return i * 100;
+						});
+
+
+	</script>
+</body>
+</html>
