@@ -40,7 +40,7 @@ Model::writeToJson(1243);
 				<p>Total Progress</p>
 				<progress max="16" id="totalProgress" style="float: left;"></progress>
 			</div>
-			<div id="score-area" style="float: left;">
+<!-- 			<div id="score-area" style="float: left;">
 				<div id="score">
 					<p>sub-score</p>
 				</div>
@@ -51,9 +51,9 @@ Model::writeToJson(1243);
 				<br>
 				<div class="col-md-3" id="tooltip">
 				</div>
-			</div>
+			</div> -->
 			<div id="question-answer-area" style="float: left">
-				<div id = "question-content" style="float: right;"></div>
+				<div id = "question-content" style="float: right; width: 500px;"></div>
 				<br><br>
 				<div id = "answer-content"></div>
 			</div>
@@ -61,6 +61,7 @@ Model::writeToJson(1243);
 		<div class="row">
 			<div id="tree-area" style="float: left;">
 			</div>
+		<div class="row">
 			<div id="buttons-area" style="float: left">
 				<button type="button" id="pre-question">Previous Question</button>
 				<button type="button" id="next-question">Next Question
@@ -68,7 +69,8 @@ Model::writeToJson(1243);
 				<br>
 				<button type="button" id="submit">Submit
 				</button>
-			</div>
+			</div>			
+		</div>
 		</div>
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
