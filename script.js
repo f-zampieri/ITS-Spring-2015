@@ -511,6 +511,11 @@ function changeColor(isRight) {
 force.start();
 })
 
+window.onload=function() {
+  document.getElementById("auto").checked = true;
+  document.getElementById("manual").checked = false;
+}
+
 document.getElementById("next-question").onmouseover=function() {
   document.getElementById("next-question").style.backgroundColor = "#3C8B3C";
 }
