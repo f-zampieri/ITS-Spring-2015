@@ -41,9 +41,9 @@ function isAutoMode(){
 var modes = d3.selectAll("input[name = mode]");
 modes.on('change', function(){
   if(isAutoMode()){
-     d3.select('#bars-area').attr('style', "display: block;float: left;");
+     d3.select('#bars-area').attr('style', "display: block;");
    } else{
-    d3.select('#bars-area').attr('style', "display: none;float: left;");
+    d3.select('#bars-area').attr('style', "display: none;");
    }
 })
 
@@ -424,6 +424,7 @@ function nextQFunc() {
   }
   updateQ();
   updatePosition();
+  document.getElementById('questionNumber').innerHTML = 'Question #' + (currentQuestion + 1);
   }
 }
 
@@ -452,6 +453,7 @@ function prevQFunc() {
   } 
   updateQ();
   updatePosition();
+  document.getElementById('questionNumber').innerHTML = 'Question #' + (currentQuestion + 1);
 }
 
 prevQ.on('click', function() {
@@ -509,3 +511,31 @@ function changeColor(isRight) {
 force.start();
 })
 
+window.onload=function() {
+  document.getElementById("auto").checked = true;
+  document.getElementById("manual").checked = false;
+}
+
+document.getElementById("next-question").onmouseover=function() {
+  document.getElementById("next-question").style.backgroundColor = "#3C8B3C";
+}
+
+document.getElementById("next-question").onmouseout=function() {
+  document.getElementById("next-question").style.backgroundColor = "#5CB85C";
+}
+
+document.getElementById("pre-question").onmouseover=function() {
+  document.getElementById("pre-question").style.backgroundColor = "#3C8B3C";
+}
+
+document.getElementById("pre-question").onmouseout=function() {
+  document.getElementById("pre-question").style.backgroundColor = "#5CB85C";
+}
+
+document.getElementById("submit").onmouseover=function() {
+  document.getElementById("submit").style.backgroundColor = "#3C8B3C";
+}
+
+document.getElementById("submit").onmouseout=function() {
+  document.getElementById("submit").style.backgroundColor = "#5CB85C";
+}

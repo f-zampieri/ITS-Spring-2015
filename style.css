@@ -2,98 +2,111 @@
 Authors: Sen Lin, Francisco Zampieri;
 CSS for the ITS tree frontend GUI
 */
-.question-answer {
-	padding-right: 200px;
-	padding-left: 100px;
+body {
+	width: 1000px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
 }
-.question-label-column { 
-	padding-right: 0px; 
-}
+	input[type="radio"] {
+    	transform: scale(1.5);
+	}
 
-#submit { 
-	margin-top: 5px;
-	margin-bottom: 30px;
-	padding: 10px 132px; 
-	/*padding: 100px 10px;*/
-	color: #FFF;
-	background-color: #5CB85C;
-	border-color: #4CAE4C;
-	border-radius: 4px;
-	border: 1px solid transparent;
-}
+	#title-area {
+		margin-top: -15px;
+		margin-bottom: -21px;
+		width: 248px;
+		border-right: 2px solid #999;
+	}
+	
+	.left {
+		float: left;
+		width: 248px;
+		height: 560px;
+		/*background-color: #98D298;*/
+		border-right: 2px solid #999;
+	}
+		#mode-area {
+			width: 110px;
+			margin-top: 40px;
+			margin-bottom: 40px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+		
+		#score-area {
+			width: 120px;
+			position: absolute;
+			top: 90px;
+		}
+		
+		#tree-bars-area {
+			position: absolute;
+			top: 160px
+		}
+			#bars-area {
+				width: 160px;
+				margin-right: auto;
+				margin-left: auto;
+			}
 
-#pre-question {
-	padding: 5px 20px; 
-	color: #FFF;
-	background-color: #5CB85C;
-	border-color: #4CAE4C;
-	border-radius: 4px;
-	border: 1px solid transparent;	
-}
+	.right {
+		position: relative;
+		float: right;
+		width: 750px;
+		height: 560px;
+	}
+		#select-area {
+			width: 500px;
+			height: 30px;
+			margin-left: auto;
+			margin-right: 130px;
+			margin-top: 0px;
+		}
 
-#next-question {
-	padding: 5px 20px; 
-	color: #FFF;
-	background-color: #5CB85C;
-	border-color: #4CAE4C;
-	border-radius: 4px;
-	border: 1px solid transparent;		
-}
+		#question-answer-area {
+			margin-top: 50px;
+			text-align: center;
+			height: 80%;
+		}
 
-input[type="radio"] {
-    transform: scale(1.5);
-}
+		#buttons-area {
+			position: absolute;
+			bottom: 0px;
+			margin-left: 250px;
+			margin-top: 5px;
+			margin-bottom: 30px;
+		}
+			#pre-question {
+				padding: 10px 20px; 
+				color: #FFF;
+				background-color: #5CB85C;
+				border-color: #4CAE4C;
+				border-top-left-radius: 8px;
+				border-bottom-left-radius: 8px;
+				border: 1px solid transparent;
+				float: left;
+			}
 
-.row { 
-	overflow: hidden;
-	display: block;
-}
+			#submit { 
+				padding: 10px 40px;
+				color: #FFF;
+				background-color: #5CB85C;
+				border-color: #4CAE4C;
+				/*border-radius: 4px;*/
+				border: 1px solid transparent;
+				border-left: 1px solid #3c8b3c;
+				border-right: 1px solid #3c8b3c;
+				float: left;
+			}
 
-#title-area {
-	margin-top: -15px;
-	margin-bottom: -30px;
-}
-
-#select-area {
-	padding: 10px;
-	margin-left: 30px;
-}
-
-#mode-area {
-	margin-top: 40px;
-	margin-right: 50px;
-	margin-bottom: 40px;
-}
-
-#bars-area {
-	margin-right: 30px;
-}
-
-#score-area {
-	margin-right: 50px;
-}
-
-#select-area {
-	margin-top: 0px;
-}
-
-#question-answer-area {
-	margin-top: 30px;
-	text-align: center;
-	margin-bottom: 30px;
-	float: right;
-}
-
-#tree-area {
-	position: fixed;
-	top: 185px;
-	margin-left: 48px;
-}
-
-#buttons-area {
-	/*margin-left: 250px;*/
-	position:fixed;
-	top: 415px;
-	/*margin-left: 30px;*/
-	float: right;
-}
+			#next-question {
+				padding: 10px 20px; 
+				color: #FFF;
+				background-color: #5CB85C;
+				border-color: #4CAE4C;
+				border-top-right-radius: 8px;
+				border-bottom-right-radius: 8px;
+				border: 1px solid transparent;
+				float: left;
+			}
