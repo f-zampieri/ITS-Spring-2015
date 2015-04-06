@@ -130,29 +130,30 @@ menuSelectQ.on('change', function(){
   updatePosition();
 })
 
+
 // adds the current question tooltip
-var tooltip = d3.select('body').append('div')
+var tooltip = d3.select('#tree-bars-area').append('div')
         .style('position', 'absolute')
-        .style('padding', '0 10px')
         .style('background', 'white')    
         .style('opacity', 0)
         .style('float', 'left');
+        // .style('padding', '0 10px')
 
 // adds the subscore tooltip
 var score = d3.select('#score').append('div')
         .style('position', 'absolute')
-        .style('padding', '0 15px')
         .style('background', 'pink')    
         .style('font-weight', 'bold')
         .style('float', 'left');
+        // .style('padding', '0 15px')
 
 // adds the total score tooltip
 var totalScore = d3.select('#totalScore').append('div')
         .style('position', 'absolute')
-        .style('padding', '0 15px')
         .style('background', 'pink')    
         .style('font-weight', 'bold')
         .style('float', 'left');
+        // .style('padding', '0 15px')
 
 var question = d3.select("#question-content").append('tspan');
 var answer = d3.select("#answer-content").append('tspan');
@@ -358,11 +359,11 @@ force.on('tick', function(e) {
     tooltip.transition()
             .style('opacity', 0.9)
     if (!isAutoMode()) {
-      tooltip.html(json.question[d.questionID].concept_name)
-      .style('left', (d3.event.pageX - 25) + 'px')
-      .style('top', (d3.event.pageY -15) + 'px');
-      question.html(json.question[d.questionID].question);
-      answer.html(json.question[d.questionID].answers);
+      // tooltip.html(json.question[d.questionID].concept_name)
+      // .style('left', (d3.event.pageX - 25) + 'px')
+      // .style('top', (d3.event.pageY -15) + 'px');
+      // question.html(json.question[d.questionID].question);
+      // answer.html(json.question[d.questionID].answers);
 
       currentQuestion = d.ndx;
       updatePosition();

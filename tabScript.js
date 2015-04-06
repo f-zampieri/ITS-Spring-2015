@@ -1,6 +1,14 @@
 jQuery(document).ready(function() {
     // TimerCircles!
-	$("#stats-area").TimeCircles(); 
+	$("#stats-area").TimeCircles({
+        time:{
+            Seconds: { color: '#0FF' },
+            Minutes: { color: '#0FF' },
+            Hours: { "show": false },
+            Days: { "show": false }
+        },
+        refresh_interval: 0.0001
+    }); 
 	console.log("READY FOR CLICKING");
     jQuery('.tabs-area .tab-links a').on('click', function(e)  {
     	console.log("CLICKED");

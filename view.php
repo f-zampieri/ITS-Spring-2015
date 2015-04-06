@@ -8,40 +8,47 @@ Model::writeToJson(1243);
 	<head>
 		<title>ITS Tree</title>
 		<link rel="stylesheet" href="style.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script type="text/javascript" src="TimeCircles.js"></script>
+		<link href="TimeCircles.css" rel="stylesheet">  
 	</head>
 
 <body>
-	<div id="title-area">
-		<h1>ITS Tree</h1>
-	</div>
 
 	<div class="left">
-		<div id="mode-area">
-			<input type="radio" name="mode" id="manual" checked="true"> &nbsp Manual </input>
-			<br><br>
-			<input type="radio" name="mode" id="auto"> &nbsp Auto </input>
+		<div id="title-area">
+			<h1>ITS Tree</h1>
 		</div>
-		<!-- <div id="score-area">
-			<div id="score">
-				<p>sub-score</p>
+		<div class="tabs-area">
+			<ul class="tab-links">
+				<li class="active-tab">
+					<a href="#tree-area">Tree</a>
+				</li>
+				<li>
+					<a href="#stats-area">Statistics</a>
+				</li>
+				<li>
+					<a href="#settings-area">Settings</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="settings-area">
+					<input type="radio" name="mode" id="manual" checked="true"> &nbsp Manual </input>
+					<br><br>
+					<input type="radio" name="mode" id="auto"> &nbsp Auto </input>
+				</div>
+				<!-- <div id="tree-bars-area"> -->
+				<div id="stats-area" style = svg"display: none;">
+					<p>Total Progress</p>
+					<progress max="16" id="totalProgress"></progress>
+					<br></br>
+					<p>Sub Progress</p>
+					<progress max="6.25" id="subProgress"></progress>
+				</div>
+				<div id="tree-area"></div>
 			</div>
-			<br><br>
-			<div id="totalScore">
-				<p>total score</p>
-			</div>
-			<br>
-			<div class="col-md-3" id="tooltip"></div>
-		</div> -->
-		<div id="tree-bars-area">
-			<div id="bars-area" style = svg"display: none;">
-				<p>Total Progress</p>
-				<progress max="16" id="totalProgress"></progress>
-				<br></br>
-				<p>Sub Progress</p>
-				<progress max="6.25" id="subProgress"></progress>
-			</div>
-			<div id="tree-area"></div>
 		</div>
+		<!-- </div> -->
 	</div>
 
 	<div class="right">
@@ -55,16 +62,16 @@ Model::writeToJson(1243);
 			<br><br>
 			<div id = "answer-content"></div>
 		</div>
-		<div id="buttons-area">
+		<div class="buttons-area">
 			<button type="button" id="pre-question" title="Previous Question"><</button>
 			<button type="button" id="submit">Submit</button>
 			<button type="button" id="next-question" title="Next Question">></button>
 		</div>
 	</div>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script src="d3/d3.min.js"></script>
-	<script src="script.js"></script>
+	<script src="tabScript.js"></script>
+	<script src="script.js"></script> 
 </body>
 </html>
