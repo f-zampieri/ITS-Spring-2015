@@ -18,6 +18,10 @@ var currentAnswer = "";
 var currentScore = 0;
 var sumScore = 0;
 
+var numCompleted = 0;
+var numCorrect = 0;
+var avgCorrect = 0;
+
 // T1 refers to the point value of the most valuable
 // concept - the one at the top of the tree
 var T1 = 6.25;
@@ -132,28 +136,13 @@ menuSelectQ.on('change', function(){
 
 
 // adds the current question tooltip
-var tooltip = d3.select('#tree-bars-area').append('div')
-        .style('position', 'absolute')
-        .style('background', 'white')    
-        .style('opacity', 0)
-        .style('float', 'left');
-        // .style('padding', '0 10px')
+var tooltip = d3.select('#tree-bars-area').append('div');
 
 // adds the subscore tooltip
-var score = d3.select('#score').append('div')
-        .style('position', 'absolute')
-        .style('background', 'pink')    
-        .style('font-weight', 'bold')
-        .style('float', 'left');
-        // .style('padding', '0 15px')
+var score = d3.select('#score').append('div');
 
 // adds the total score tooltip
-var totalScore = d3.select('#totalScore').append('div')
-        .style('position', 'absolute')
-        .style('background', 'pink')    
-        .style('font-weight', 'bold')
-        .style('float', 'left');
-        // .style('padding', '0 15px')
+var totalScore = d3.select('#totalScore').append('div');
 
 var question = d3.select("#question-content").append('tspan');
 var answer = d3.select("#answer-content").append('tspan');
@@ -417,15 +406,16 @@ function updateQ(){
 
 // handles the case that we are moving on to the next branch
 function nextQFunc() {
+  console.log(currentQuestion, currentBranch)
   if (currentQuestion != 15 && currentBranch != 16) {
-  currentQuestion++;
-  if (currentQuestion > 14) {
-    currentBranch++;
-    updateBranch();
-  }
-  updateQ();
-  updatePosition();
-  document.getElementById('questionNumber').innerHTML = 'Question #' + (currentQuestion + 1);
+      currentQuestion++;
+    if (currentQuestion == 15) {
+      currentBranch++;
+      updateBranch();
+    }
+    updateQ();
+    updatePosition();
+    //document.getElementById('questionNumber').innerHTML = 'Question #' + (currentQuestion + 1);
   }
 }
 
@@ -471,15 +461,18 @@ var submitB = d3.select("#submit");
 submitB.on('click', function() {
   currentAnswer = json.question[nodes[currentQuestion].questionID].answers;    
   var random = Math.random();
+  numCompleted++;
   if (random >= .5) {
     // records += " right";
     currentScore += nodes[currentQuestion].score;
     sumScore += nodes[currentQuestion].score;
     changeColor(true);
+    numCorrect++;
   } else {
     // records += " wrong";
     changeColor(false);
   }
+  avgCorrect = numCorrect / numCompleted;
   if (currentScore >= MAX_SCORE && isAutoMode()) {
     currentBranch++;
     updateBranch();
@@ -488,6 +481,8 @@ submitB.on('click', function() {
     nextQFunc();
     console.log("current question is from after" + currentQuestion);
   }
+  document.getElementById("avg-score").innerHTML = "Average correct: " + Math.round(avgCorrect * 100) + "%";
+  document.getElementById("num-completed").innerHTML = "Number completed: " + numCompleted;
   // wrong = wrong * -1;
 });
 

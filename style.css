@@ -72,18 +72,16 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-    /*padding:15px;*/
     background:#fff;
-    /*margin-left: 30px;*/
-    float: right;
-    margin-right: 100px;
+    /*float: right;*/
+    margin-left: 40px;
 }
-/*
-.tabs-area {
+
+/*.tab-content {
     display: none;
 }
 
-.tabs-area.active-tab {
+.tab-content.active-tab {
     display: block;
 }*/
 
@@ -93,9 +91,12 @@ li.active a, li.active a:hover {
 }
 
 #stats-area {
-	width: 160px;
-	/*margin-right: auto;*/
-	/*margin-left: auto;*/
+	/*width: 160px;*/
+	margin-left: 40px;
+}
+
+#timers-area {
+	height: 100px;
 }
 
 #settings-area {
@@ -107,13 +108,9 @@ li.active a, li.active a:hover {
 }
 
 .right {
-	/*position: relative;*/
 	position: absolute;
 	float: left;
 	margin-left: 330px;
-	/*margin-left: auto;*/
-	/*top: 10px;*/
-	/*width: 300px;*/
 	height: 560px;
 }
 

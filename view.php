@@ -7,10 +7,10 @@ Model::writeToJson(1243);
 <html>
 	<head>
 		<title>ITS Tree</title>
-		<link rel="stylesheet" href="style.css">
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="TimeCircles.js"></script>
 		<link href="TimeCircles.css" rel="stylesheet">  
+		<link rel="stylesheet" href="style.css">
 	</head>
 
 <body>
@@ -21,7 +21,7 @@ Model::writeToJson(1243);
 		</div>
 		<div class="tabs-area">
 			<ul class="tab-links">
-				<li class="active-tab">
+				<li >
 					<a href="#tree-area">Tree</a>
 				</li>
 				<li>
@@ -32,23 +32,29 @@ Model::writeToJson(1243);
 				</li>
 			</ul>
 			<div class="tab-content">
-				<div id="settings-area">
+				<div id="settings-area" style="display: none;">
 					<input type="radio" name="mode" id="manual" checked="true"> &nbsp Manual </input>
 					<br><br>
 					<input type="radio" name="mode" id="auto"> &nbsp Auto </input>
 				</div>
-				<!-- <div id="tree-bars-area"> -->
-				<div id="stats-area" style = svg"display: none;">
-					<p>Total Progress</p>
-					<progress max="16" id="totalProgress"></progress>
-					<br></br>
-					<p>Sub Progress</p>
-					<progress max="6.25" id="subProgress"></progress>
+				<div id="stats-area" style ="display: none;">
+					<div id="bars-area">
+						<p>Total Progress</p>
+						<progress max="16" id="totalProgress"></progress>
+						<br></br>
+						<p>Sub Progress</p>
+						<progress max="6.25" id="subProgress" style="margin-bottom: 20px;"></progress>
+					</div>
+					<div id="scores-area">
+						<p id="avg-score">Average correct: 0</p>
+						<p id="num-completed">Number completed: 0</p>
+					</div>
+					<div id="timers-area">
+					</div>
 				</div>
-				<div id="tree-area"></div>
+				<div id="tree-area" class="active-tab"></div>
 			</div>
 		</div>
-		<!-- </div> -->
 	</div>
 
 	<div class="right">
