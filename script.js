@@ -145,7 +145,7 @@ var score = d3.select('#score').append('div');
 var totalScore = d3.select('#totalScore').append('div');
 
 var question = d3.select("#question-content").append('tspan');
-var answer = d3.select("#answer-content").append('tspan');
+var answer = d3.select("#answer-content");
 
 // defines the hideous palette. good job Sen
 var palette = {
