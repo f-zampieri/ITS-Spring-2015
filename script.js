@@ -7,7 +7,7 @@ then create dynamic interface and allows user interactions
 */
 //creates timer
 var e = document.getElementById("timer-area");
-var t = new Timer(e, false, 10, 15);
+var t = new Timer(e, false, 10, 60);
 t.startf();
 // These mostly refer to indices
 // currentBranch refers to the index of the current branch
@@ -482,11 +482,11 @@ submitB.on('click', function() {
     currentScore = 0;
   } else {
     nextQFunc();
-    //resets timer
-    t.resetf(125);
-    t.startf();
     console.log("current question is from after" + currentQuestion);
   }
+  //resets timer
+  t.resetf(Math.floor(30*Math.random())+5);
+  t.startf();
   document.getElementById("avg-score").innerHTML = "Average correct: " + Math.round(avgCorrect * 100) + "%";
   document.getElementById("num-completed").innerHTML = "Number completed: " + numCompleted;
   // wrong = wrong * -1;

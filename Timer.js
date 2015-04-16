@@ -91,9 +91,9 @@ var Timer = function(elem, hasBtn, warn, limit) {
             limit = newLim;
         };
         clearInterval(intID);
-        if (flash != undefined) {
-            clearInterval(flash);
-        };
+        // if (flash != undefined) {
+        //     clearInterval(flash);
+        // };
         outSec = 0;
         t2 = 0;
         sec = 0;
@@ -128,7 +128,7 @@ var Timer = function(elem, hasBtn, warn, limit) {
         if (sec >= limit*1000) {
             stopf();
             start.style.display = "none";
-            outSec = limit*1000;
+            outSec = (limit*1000)%60000;
             display.style.color = "red";
             // console.log(outSec);
             setTimeout(timeup, 10);
