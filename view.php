@@ -8,8 +8,8 @@ Model::writeToJson(1243);
 	<head>
 		<title>ITS Tree</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script type="text/javascript" src="TimeCircles.js"></script>
-		<link href="TimeCircles.css" rel="stylesheet">  
+		<script type="text/javascript" src="Timer.js"></script>
+		<link rel="stylesheet" href="timer.css">  
 		<link rel="stylesheet" href="style.css">
 	</head>
 
@@ -49,7 +49,8 @@ Model::writeToJson(1243);
 						<p id="avg-score">Average correct: 0</p>
 						<p id="num-completed">Number completed: 0</p>
 					</div>
-					<div id="timers-area">
+					<p>Timer</p>
+					<div id="timer-area">
 					</div>
 				</div>
 				<div id="tree-area" class="active-tab"></div>
