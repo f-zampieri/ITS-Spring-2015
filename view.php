@@ -67,7 +67,7 @@ Model::writeToJson(1243);
 		<div id="question-answer-area">
 			<div id = "question-content"></div>
 			<br><br>
-			<div id = "answer-content"></div>
+			<!-- <div id = "answer-content"></div> -->
 		</div>
 		<div class="buttons-area">
 			<button type="button" id="pre-question" title="Previous Question"><</button>
